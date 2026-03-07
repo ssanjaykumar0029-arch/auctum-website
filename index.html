@@ -1,244 +1,605 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auctum Solu Pvt Ltd</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Auctum Solutions Pvt. Ltd. | Powering Brands with Purity</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FAF7F2;
+      --fg: #1A1612;
+      --muted: #6B5E4F;
+      --accent: #C4933A;
+      --accent-dark: #9A7429;
+      --card: #FFFFFF;
+      --border: #E8E2D9;
+      --home-care: #3A8FC4; /* Blue for Home Care */
+      --divine-care: #C4933A; /* Gold for Divine Care */
+    }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      overflow-x: hidden;
+    }
+    .font-display { font-family: 'Cormorant Garamond', serif; }
 
-<style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family: 'Montserrat', sans-serif;
-}
+    /* Hero Background */
+    .hero-bg {
+      background: 
+        radial-gradient(ellipse 80% 50% at 50% -20%, rgba(196, 147, 58, 0.15) 0%, transparent 50%),
+        linear-gradient(180deg, #F5EFE4 0%, var(--bg) 100%);
+    }
 
-body{
-    background:#f9f9f9;
-}
+    /* Animations */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .stagger-1 { transition-delay: 0.1s; }
+    .stagger-2 { transition-delay: 0.2s; }
+    .stagger-3 { transition-delay: 0.3s; }
 
-/* Navbar */
-nav{
-    background:#0d1b2a;
-    color:white;
-    padding:15px 50px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-}
+    /* Buttons */
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 4px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: inline-block;
+      text-decoration: none;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(196, 147, 58, 0.35);
+    }
+    
+    /* Cards */
+    .product-card {
+      background: var(--card);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+      border: 1px solid var(--border);
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .product-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.08);
+    }
+    .product-card img { transition: transform 0.6s ease; width: 100%; height: 100%; object-fit: cover; }
+    .product-card:hover img { transform: scale(1.05); }
 
-nav h2{
-    font-size:22px;
-}
+    /* Navigation */
+    .nav-link {
+      position: relative;
+      color: var(--muted);
+      font-weight: 500;
+      transition: color 0.3s ease;
+      text-decoration: none;
+    }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .nav-link:hover { color: var(--fg); }
+    .nav-link:hover::after { width: 100%; }
 
-nav a{
-    color:white;
-    text-decoration:none;
-    margin-left:20px;
-}
-
-/* Hero */
-.hero{
-    background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
-    url('https://images.unsplash.com/photo-1581578731548-c64695cc6952');
-    background-size:cover;
-    background-position:center;
-    color:white;
-    text-align:center;
-    padding:100px 20px;
-}
-
-.hero h1{
-    font-size:40px;
-    margin-bottom:20px;
-}
-
-/* Products */
-.products{
-    padding:60px 50px;
-    text-align:center;
-}
-
-.products h2{
-    margin-bottom:40px;
-}
-
-.product-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-    gap:30px;
-}
-
-.card{
-    background:white;
-    padding:20px;
-    border-radius:10px;
-    box-shadow:0 5px 15px rgba(0,0,0,0.1);
-}
-
-.card img{
-    width:100%;
-    height:200px;
-    object-fit:cover;
-    border-radius:8px;
-}
-
-.card h3{
-    margin:15px 0;
-}
-
-/* Contact */
-.contact{
-    padding:60px 50px;
-    background:#e0e1dd;
-}
-
-.contact h2{
-    text-align:center;
-    margin-bottom:30px;
-}
-
-form{
-    max-width:500px;
-    margin:auto;
-    display:flex;
-    flex-direction:column;
-    gap:15px;
-}
-
-input, textarea{
-    padding:12px;
-    border-radius:6px;
-    border:1px solid #ccc;
-}
-
-button{
-    padding:12px;
-    background:#1b263b;
-    color:white;
-    border:none;
-    border-radius:6px;
-    cursor:pointer;
-    font-weight:600;
-    transition:0.3s;
-}
-
-button:hover{
-    background:#415a77;
-}
-
-/* Footer */
-footer{
-    background:#0d1b2a;
-    color:white;
-    text-align:center;
-    padding:20px;
-}
-</style>
+    .divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-dark));
+      border-radius: 2px;
+    }
+    
+    .image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(26, 22, 18, 0.7) 0%, transparent 60%);
+      z-index: 2;
+    }
+  </style>
 </head>
-
 <body>
 
-<nav>
-    <h2>Auctum Solu Pvt Ltd</h2>
-    <div>
-        <a href="#">Home</a>
-        <a href="#products">Products</a>
-        <a href="#contact">Contact</a>
+  <!-- Navigation -->
+  <nav class="fixed top-0 left-0 right-0 z-50 bg-white/90 backdrop-blur-md border-b border-[var(--border)]">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-[var(--accent)] to-[var(--accent-dark)] flex items-center justify-center">
+          <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <span class="font-display text-xl font-bold text-[var(--fg)]">Auctum Solutions</span>
+          <span class="block text-xs text-[var(--muted)] -mt-1">Pvt. Ltd.</span>
+        </div>
+      </a>
+
+      <div class="hidden md:flex items-center gap-8">
+        <a href="#home" class="nav-link">Home</a>
+        <a href="#about" class="nav-link">About</a>
+        <a href="#products" class="nav-link">Products</a>
+        <a href="#sustainability" class="nav-link">Sustainability</a>
+        <a href="#contact" class="nav-link">Contact</a>
+      </div>
+
+      <a href="#contact" class="hidden md:inline-flex btn-primary text-sm">Get Quote</a>
+
+      <button id="mobileMenuBtn" class="md:hidden p-2" aria-label="Open menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
     </div>
-</nav>
 
-<section class="hero">
-    <h1>Quality Detergent & Pooja Products</h1>
-    <p>Trusted Products for Every Home</p>
-</section>
-
-<section class="products" id="products">
-    <h2>Our Products</h2>
-    <div class="product-grid">
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1583947581924-860bda6a26df">
-            <h3>Ultra Wash Detergent Powder</h3>
-            <p>₹120 / 1kg</p>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1600857544200-b2f666a9a2ec">
-            <h3>Liquid Detergent</h3>
-            <p>₹150 / 1L</p>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1616627981431-bcc7b0c3d6c2">
-            <h3>Agarbathi Pack</h3>
-            <p>₹60 / Box</p>
-        </div>
-
-        <div class="card">
-            <img src="https://images.unsplash.com/photo-1621504450181-5c8b7a0d4c14">
-            <h3>Pooja Oil</h3>
-            <p>₹90 / 500ml</p>
-        </div>
-
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="fixed top-0 right-0 bottom-0 w-72 bg-white shadow-2xl md:hidden z-50 transform translate-x-full transition-transform duration-400">
+      <div class="p-6">
+        <button id="closeMobileMenu" class="absolute top-4 right-4 p-2" aria-label="Close menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        <nav class="mt-12 flex flex-col gap-6">
+          <a href="#home" class="nav-link text-lg">Home</a>
+          <a href="#about" class="nav-link text-lg">About</a>
+          <a href="#products" class="nav-link text-lg">Products</a>
+          <a href="#contact" class="nav-link text-lg">Contact</a>
+        </nav>
+      </div>
     </div>
-</section>
+  </nav>
 
-<section class="contact" id="contact">
-    <h2>Contact Us</h2>
-    <form id="contactForm">
-        <input type="text" id="name" placeholder="Your Name" required>
-        <input type="text" id="phone" placeholder="Phone Number" required>
-        <input type="email" id="email" placeholder="Email Address" required>
-        <textarea id="message" rows="4" placeholder="Your Message" required></textarea>
-        <button type="submit">Send Message</button>
-    </form>
-</section>
+  <!-- Hero Section -->
+  <section id="home" class="hero-bg min-h-screen pt-20 relative overflow-hidden">
+    <div class="max-w-7xl mx-auto px-6 py-16 lg:py-24">
+      <div class="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="order-2 lg:order-1">
+          <div class="reveal stagger-1">
+            <span class="inline-block px-4 py-1.5 bg-[var(--accent)]/10 text-[var(--accent)] text-sm font-semibold rounded-full mb-6">
+              Legacy of Quality & Innovation
+            </span>
+          </div>
+          
+          <h1 class="reveal stagger-2 font-display text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
+            Powering Brands with
+            <span class="text-[var(--accent)]">Purity & Performance</span>
+          </h1>
+          
+          <p class="reveal stagger-3 text-lg text-[var(--muted)] mb-8 max-w-xl">
+            Auctum Solutions Pvt. Ltd. is a trusted partner in the contract manufacturing industry, delivering cutting-edge Home Care and Divine Care products.
+          </p>
+          
+          <div class="reveal stagger-4 flex flex-wrap gap-4">
+            <a href="#products" class="btn-primary">Explore Products</a>
+            <a href="#about" class="px-8 py-3 border-2 border-[var(--border)] rounded font-semibold hover:border-[var(--accent)] hover:text-[var(--accent)] transition-colors">Our Capabilities</a>
+          </div>
+        </div>
 
-<footer>
-    © 2026 Auctum Solu Pvt Ltd | All Rights Reserved
-</footer>
+        <div class="order-1 lg:order-2 reveal">
+          <div class="relative rounded-2xl overflow-hidden shadow-2xl aspect-square max-w-lg mx-auto">
+            <img 
+              src="main.png" 
+              alt="Manufacturing Excellence" 
+              class="w-full h-full object-cover"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-<!-- FIREBASE SCRIPT -->
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  <!-- About / Vision / Mission Section -->
+  <section id="about" class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-16 items-center">
+        <div class="reveal">
+          <div class="divider mb-6"></div>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold mb-6">About Auctum Solutions</h2>
+          <p class="text-[var(--muted)] mb-6">
+            With dedicated units in Bengaluru and Mandya, we deliver high-quality products for brands looking to scale without compromising on quality or consistency. We specialize in custom formulations, private labelling, and flexible batch sizes.
+          </p>
+          
+          <div class="grid grid-cols-2 gap-6 mb-8">
+            <div>
+              <h4 class="font-display text-xl font-semibold text-[var(--accent)] mb-2">Our Vision</h4>
+              <p class="text-sm text-[var(--muted)]">To emerge as a preferred contract manufacturer by offering flexible, scalable, and sustainable solutions that blend tradition with innovation.</p>
+            </div>
+            <div>
+              <h4 class="font-display text-xl font-semibold text-[var(--accent)] mb-2">Our Mission</h4>
+              <p class="text-sm text-[var(--muted)]">We provide flexible, innovative private-labeling solutions that empower businesses to build successful brands meeting unique market demands.</p>
+            </div>
+          </div>
+        </div>
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCwgN8eUKFTFUxuSyurg7FVcYuHkdnFY8o",
-  authDomain: "auctum-sol-website-29691.firebaseapp.com",
-  projectId: "auctum-sol-website-29691",
-  storageBucket: "auctum-sol-website-29691.appspot.com",
-  messagingSenderId: "942893459368",
-  appId: "1:942893459368:web:ebf3845d1f2d15a388df9d"
-};
+        <div class="reveal stagger-2 bg-[var(--bg)] p-8 rounded-xl border border-[var(--border)]">
+          <h3 class="font-display text-2xl font-bold mb-6 text-center">Core Values</h3>
+          <div class="space-y-4">
+            <div class="flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm">
+              <div class="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">1</div>
+              <span class="font-semibold">Customer First</span>
+            </div>
+            <div class="flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm">
+              <div class="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">2</div>
+              <span class="font-semibold">Quality Commitment</span>
+            </div>
+            <div class="flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm">
+              <div class="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">3</div>
+              <span class="font-semibold">Sustainability</span>
+            </div>
+            <div class="flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm">
+              <div class="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">4</div>
+              <span class="font-semibold">Integrity & Transparency</span>
+            </div>
+            <div class="flex items-center gap-4 bg-white p-3 rounded-lg shadow-sm">
+              <div class="w-10 h-10 rounded-full bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)]">5</div>
+              <span class="font-semibold">Collaboration</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+  <!-- Products Section -->
+  <section id="products" class="py-20 bg-[var(--bg)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-16">
+        <div class="reveal">
+          <div class="divider mx-auto mb-6"></div>
+          <h2 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold mb-4">Solutions for Every Need</h2>
+        </div>
+      </div>
 
-document.getElementById("contactForm").addEventListener("submit", async (e) => {
-  e.preventDefault();
+      <!-- HOME CARE PRODUCTS -->
+      <div class="mb-16">
+        <div class="flex items-center gap-4 mb-8 reveal">
+          <h3 class="font-display text-2xl font-bold text-[var(--home-care)]">Home Care Solutions</h3>
+          <div class="flex-1 h-px bg-[var(--border)]"></div>
+        </div>
+        <div class="grid md:grid-cols-4 gap-6">
+          
+          <div class="product-card reveal stagger-1">
+            <div class="h-40 overflow-hidden relative">
+              <img src="fabric.png" alt="Detergents">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="p-4 bg-white">
+              <h4 class="font-semibold mb-1">Fabric Care</h4>
+              <p class="text-xs text-[var(--muted)]">Liquid & Powder Detergents, Fabric Conditioners.</p>
+            </div>
+          </div>
 
-  try {
-    await addDoc(collection(db, "customerMessages"), {
-      name: document.getElementById("name").value,
-      phone: document.getElementById("phone").value,
-      email: document.getElementById("email").value,
-      message: document.getElementById("message").value,
-      createdAt: new Date()
+          <div class="product-card reveal stagger-2">
+            <div class="h-40 overflow-hidden relative">
+              <img src="dish Care.png" alt="Dish Care">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="p-4 bg-white">
+              <h4 class="font-semibold mb-1">Dish Care</h4>
+              <p class="text-xs text-[var(--muted)]">Dishwashing Liquids & Bars. Tough on grease.</p>
+            </div>
+          </div>
+
+          <div class="product-card reveal stagger-3">
+            <div class="h-40 overflow-hidden relative">
+              <img src="advanceds&d.png" alt="Surface Care">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="p-4 bg-white">
+              <h4 class="font-semibold mb-1">Surface Care</h4>
+              <p class="text-xs text-[var(--muted)]">Multi-Surface & Toilet Cleaners, Glass Cleaners.</p>
+            </div>
+          </div>
+
+          <div class="product-card reveal stagger-4">
+            <div class="h-40 overflow-hidden relative bg-blue-50 flex items-center justify-center">
+              <div class="text-center p-4">
+                <svg class="w-12 h-12 mx-auto text-[var(--home-care)] opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+              </div>
+              <div class="image-overlay"></div>
+            </div>
+            <div class="p-4 bg-white">
+              <h4 class="font-semibold mb-1">Advanced R&D</h4>
+              <p class="text-xs text-[var(--muted)]">Custom formulations for superior stain removal.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- DIVINE CARE PRODUCTS -->
+      <div>
+        <div class="flex items-center gap-4 mb-8 reveal">
+          <h3 class="font-display text-2xl font-bold text-[var(--divine-care)]">Divine Care Products</h3>
+          <div class="flex-1 h-px bg-[var(--border)]"></div>
+        </div>
+        <p class="text-[var(--muted)] mb-8 max-w-2xl reveal">Spiritual Purity, Scientifically Made. Our Mandya-based unit manufactures premium devotional products rooted in tradition.</p>
+        
+        <div class="grid md:grid-cols-4 gap-6">
+          
+          <div class="product-card reveal stagger-1">
+            <div class="h-40 overflow-hidden relative">
+              <img src="incense Dhoop.png" alt="Incense">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="p-4 bg-white">
+              <h4 class="font-semibold mb-1">Incense & Dhoop</h4>
+              <p class="text-xs text-[var(--muted)]">Agarbatti, Dhoop Sticks, Cup Sambrani, Loban.</p>
+            </div>
+          </div>
+
+          <div class="product-card reveal stagger-2">
+            <div class="h-40 overflow-hidden relative">
+              <img src="edit the image.png" alt="Pooja Essentials">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="p-4 bg-white">
+              <h4 class="font-semibold mb-1">Pooja Essentials</h4>
+              <p class="text-xs text-[var(--muted)]">Lamp Oil, Camphor, Kumkum & Turmeric.</p>
+            </div>
+          </div>
+
+          <div class="product-card reveal stagger-3">
+            <div class="h-40 overflow-hidden relative">
+              <img src="edit the image to re.png" alt="Puja Kits">
+              <div class="image-overlay"></div>
+            </div>
+            <div class="p-4 bg-white">
+              <h4 class="font-semibold mb-1">Specialty Items</h4>
+              <p class="text-xs text-[var(--muted)]">Puja Room Spray, Utensil Polish, Puja Kits.</p>
+            </div>
+          </div>
+
+          <div class="product-card reveal stagger-4 flex items-center justify-center bg-gradient-to-br from-amber-50 to-orange-50 border border-[var(--accent)]/20">
+             <div class="p-6 text-center">
+               <h4 class="font-display text-lg font-bold text-[var(--accent)] mb-2">Tradition Meets Science</h4>
+               <p class="text-xs text-[var(--muted)]">High-purity camphor, natural ingredients, clean processes.</p>
+             </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Capabilities Section -->
+  <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12 reveal">
+        <h2 class="font-display text-3xl sm:text-4xl font-bold mb-4">Your Brand, Our Expertise</h2>
+        <p class="text-[var(--muted)]">We're not just manufacturers—we are your growth partners.</p>
+      </div>
+
+      <div class="grid md:grid-cols-3 gap-8">
+        <div class="text-center p-6 reveal stagger-1">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--bg)] flex items-center justify-center">
+            <svg class="w-8 h-8 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>
+          </div>
+          <h4 class="font-semibold mb-2">Custom Formulation & Testing</h4>
+          <p class="text-sm text-[var(--muted)]">Advanced R&D for unique product development tailored to your market.</p>
+        </div>
+        
+        <div class="text-center p-6 reveal stagger-2">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--bg)] flex items-center justify-center">
+            <svg class="w-8 h-8 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>
+          </div>
+          <h4 class="font-semibold mb-2">Private Label Support</h4>
+          <p class="text-sm text-[var(--muted)]">End-to-end packaging and branding support to launch your product line.</p>
+        </div>
+
+        <div class="text-center p-6 reveal stagger-3">
+          <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-[var(--bg)] flex items-center justify-center">
+            <svg class="w-8 h-8 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+          </div>
+          <h4 class="font-semibold mb-2">Scalable Production</h4>
+          <p class="text-sm text-[var(--muted)]">Fast turnarounds and strict quality compliance for businesses of all sizes.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sustainability Section -->
+  <section id="sustainability" class="py-20 bg-[var(--fg)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div class="reveal">
+          <div class="divider mb-6"></div>
+          <h2 class="font-display text-3xl sm:text-4xl font-bold text-white mb-4">Preparing for a Greener Future</h2>
+          <p class="text-white/60 mb-8">
+            We are fully capable of supporting sustainable manufacturing practices. We're exploring collaborations with eco-conscious brands to create a sustainable supply chain.
+          </p>
+        </div>
+        
+        <div class="reveal stagger-2 grid grid-cols-2 gap-4">
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h4 class="text-white font-semibold mb-2">Eco-Friendly Ingredients</h4>
+            <p class="text-white/40 text-sm">Bio-based formulations.</p>
+          </div>
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h4 class="text-white font-semibold mb-2">Green Packaging</h4>
+            <p class="text-white/40 text-sm">Recyclable & biodegradable materials.</p>
+          </div>
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h4 class="text-white font-semibold mb-2">Water Conservation</h4>
+            <p class="text-white/40 text-sm">Advanced water reuse systems.</p>
+          </div>
+          <div class="bg-white/5 p-6 rounded-lg border border-white/10">
+            <h4 class="text-white font-semibold mb-2">Energy Efficiency</h4>
+            <p class="text-white/40 text-sm">Modern equipment & waste minimization.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-20 bg-[var(--bg)]">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <div class="divider mx-auto mb-6"></div>
+        <h2 class="font-display text-3xl sm:text-4xl font-bold">Get in Touch</h2>
+      </div>
+
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Address Cards -->
+        <div class="lg:col-span-1 space-y-6 reveal">
+          <div class="bg-white p-6 rounded-lg shadow-sm border border-[var(--border)]">
+            <h4 class="font-semibold text-[var(--accent)] mb-2">Bengaluru Unit</h4>
+            <p class="text-sm text-[var(--muted)]">Shed #27, DITPL, KIADB,<br>Doddaballapur, Bengaluru Rural,<br>Karnataka - 561203</p>
+          </div>
+          
+          <div class="bg-white p-6 rounded-lg shadow-sm border border-[var(--border)]">
+            <h4 class="font-semibold text-[var(--accent)] mb-2">Mandya Unit</h4>
+            <p class="text-sm text-[var(--muted)]">Auctum Solutions Pvt. Ltd., P-45,<br>Tubinkere Industrial Estate,<br>Mandya, Karnataka - 571 402</p>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-sm border border-[var(--border)]">
+             <h4 class="font-semibold text-[var(--accent)] mb-2">Contact Info</h4>
+             <p class="text-sm text-[var(--muted)] mb-1"><strong>Phone:</strong> +91 9946133337</p>
+             <p class="text-sm text-[var(--muted)] mb-1"><strong>Phone:</strong> +91 9900020961</p>
+             <p class="text-sm text-[var(--muted)]"><strong>Email:</strong> auctumsolutions2023@gmail.com</p>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="lg:col-span-2 reveal stagger-2">
+          <form id="contactForm" class="bg-white p-8 rounded-xl shadow-sm border border-[var(--border)]">
+            <div class="grid sm:grid-cols-2 gap-4 mb-4">
+              <div>
+                <label for="name" class="block text-sm font-medium mb-2">Name</label>
+                <input type="text" id="name" class="w-full px-4 py-3 rounded-lg border border-[var(--border)] focus:border-[var(--accent)] focus:outline-none transition-colors" placeholder="Your Name" required>
+              </div>
+              <div>
+                <label for="phone" class="block text-sm font-medium mb-2">Phone</label>
+                <input type="tel" id="phone" class="w-full px-4 py-3 rounded-lg border border-[var(--border)] focus:border-[var(--accent)] focus:outline-none transition-colors" placeholder="Your Phone" required>
+              </div>
+            </div>
+            <div class="mb-4">
+              <label for="email" class="block text-sm font-medium mb-2">Email</label>
+              <input type="email" id="email" class="w-full px-4 py-3 rounded-lg border border-[var(--border)] focus:border-[var(--accent)] focus:outline-none transition-colors" placeholder="your@email.com" required>
+            </div>
+            <div class="mb-6">
+              <label for="message" class="block text-sm font-medium mb-2">Message</label>
+              <textarea id="message" rows="4" class="w-full px-4 py-3 rounded-lg border border-[var(--border)] focus:border-[var(--accent)] focus:outline-none transition-colors resize-none" placeholder="Tell us about your manufacturing requirements..." required></textarea>
+            </div>
+            <button type="submit" id="submitBtn" class="btn-primary w-full">Send Message</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-[var(--fg)] border-t border-white/10 py-8">
+    <div class="max-w-7xl mx-auto px-6 text-center">
+      <span class="font-display text-lg font-semibold text-white">Auctum Solutions Pvt. Ltd.</span>
+      <p class="text-white/40 text-sm mt-2">© 2024 Auctum Solutions. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- FIREBASE & JS SCRIPT -->
+  <script type="module">
+    // Firebase Imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    // Your Firebase Configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDmOnIPyO8zS1hBsZj4NEvh3VUVNZdZLQQ",
+      authDomain: "auctum-sol-website.firebaseapp.com",
+      projectId: "auctum-sol-website",
+      storageBucket: "auctum-sol-website.firebasestorage.app",
+      messagingSenderId: "395444514171",
+      appId: "1:395444514171:web:3e0df2989aaa0c4e2a21de"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Mobile Menu Logic
+    const mobileMenuBtn = document.getElementById("mobileMenuBtn");
+    const closeMobileMenu = document.getElementById("closeMobileMenu");
+    const mobileMenu = document.getElementById("mobileMenu");
+
+    if (mobileMenuBtn && closeMobileMenu && mobileMenu) {
+      mobileMenuBtn.addEventListener("click", () => mobileMenu.classList.remove("translate-x-full")); 
+      mobileMenuBtn.addEventListener("click", () => mobileMenu.classList.add("translate-x-0")); 
+      closeMobileMenu.addEventListener("click", () => mobileMenu.classList.add("translate-x-full"));
+      closeMobileMenu.addEventListener("click", () => mobileMenu.classList.remove("translate-x-0"));
+    }
+
+    // Scroll Reveal Animation
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) entry.target.classList.add("visible");
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
+
+    // Form Submission to Firebase
+    const form = document.getElementById("contactForm");
+    const btn = document.getElementById("submitBtn");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const originalText = btn.textContent;
+      btn.textContent = "Sending...";
+      btn.disabled = true;
+
+      const name = document.getElementById("name").value;
+      const phone = document.getElementById("phone").value;
+      const email = document.getElementById("email").value;
+      const message = document.getElementById("message").value;
+
+      try {
+        await addDoc(collection(db, "customerMessages"), {
+          name, phone, email, message, createdAt: new Date()
+        });
+
+        btn.textContent = "Message Sent!";
+        btn.style.background = "#4A9C6D";
+
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.style.background = "";
+          btn.disabled = false;
+          form.reset();
+        }, 2000);
+
+      } catch (error) {
+        alert("Error sending message. Please check console.");
+        console.error(error);
+        btn.textContent = originalText;
+        btn.disabled = false;
+      }
     });
-
-    alert("Message Sent Successfully!");
-    document.getElementById("contactForm").reset();
-
-  } catch (error) {
-    console.error(error);
-    alert(error.message);
-  }
-});
-</script>
-
+  </script>
 </body>
 </html>
+
