@@ -65,14 +65,13 @@
       gap: 12px;
       padding: 10px;
       border-radius: 8px;
-      color: var(--fg); /* Unified Color */
+      color: var(--fg);
       text-decoration: none;
       transition: background 0.2s;
       font-size: 0.9rem;
     }
     .dropdown-link:hover { background: #F1F5F9; }
     
-    /* Unified Icon Style */
     .dropdown-icon {
       width: 32px; 
       height: 32px; 
@@ -81,8 +80,8 @@
       align-items: center; 
       justify-content: center; 
       flex-shrink: 0;
-      background: #F1F5F9; /* Unified Background */
-      color: var(--fg); /* Unified Color */
+      background: #F1F5F9;
+      color: var(--fg);
     }
 
     /* Animations */
@@ -94,7 +93,14 @@
       background: var(--fg); color: white; padding: 12px 24px; border-radius: 8px; font-weight: 600; border: none; cursor: pointer; transition: all 0.3s; display: inline-block; text-decoration: none; font-size: 0.9rem; }
     .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.15); }
 
-    .product-card { background: var(--card); border-radius: 12px; overflow: hidden; transition: all 0.4s ease; border: 1px solid transparent; }
+    .product-card { 
+      background: var(--card); 
+      border-radius: 12px; 
+      overflow: hidden; 
+      transition: all 0.4s ease; 
+      border: 1px solid transparent;
+      cursor: pointer;
+    }
     .product-card:hover { transform: translateY(-5px); box-shadow: 0 15px 30px -10px rgba(0, 0, 0, 0.1); border-color: var(--border); }
 
     /* Custom Form Design */
@@ -116,9 +122,215 @@
     .custom-input::placeholder { color: #9CA3AF; }
 
     .hero-gradient { background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%); }
+
+    /* Product Modal Styles */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .product-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      background: white;
+      width: 90%;
+      max-width: 800px;
+      max-height: 90vh;
+      border-radius: 20px;
+      z-index: 201;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .product-modal.active {
+      opacity: 1;
+      visibility: visible;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: white;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 10;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .modal-close:hover {
+      background: var(--fg);
+      color: white;
+      border-color: var(--fg);
+    }
+
+    .modal-image-container {
+      position: relative;
+      background: #F8FAFC;
+      overflow: hidden;
+    }
+    .modal-image {
+      width: 100%;
+      height: 280px;
+      object-fit: contain;
+      transition: transform 0.5s ease;
+    }
+    .modal-image:hover {
+      transform: scale(1.05);
+    }
+
+    .modal-badge {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      padding: 6px 14px;
+      background: var(--accent);
+      color: white;
+      font-size: 0.75rem;
+      font-weight: 600;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px;
+      background: #F8FAFC;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+    .feature-item:hover {
+      background: #F1F5F9;
+      transform: translateX(4px);
+    }
+
+    .inquiry-btn {
+      width: 100%;
+      padding: 14px 24px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: none;
+      background: var(--accent);
+      color: white;
+    }
+    .inquiry-btn:hover {
+      background: #9A7240;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(180, 132, 76, 0.3);
+    }
+
+    .price-tag {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--fg);
+    }
+    .price-unit {
+      font-size: 0.95rem;
+      font-weight: 400;
+      color: var(--muted);
+    }
+
+    .rating-stars {
+      color: #F59E0B;
+      letter-spacing: 2px;
+    }
+
+    @media (max-width: 768px) {
+      .product-modal {
+        width: 95%;
+        max-height: 95vh;
+      }
+      .modal-body {
+        flex-direction: column !important;
+      }
+      .modal-image {
+        height: 200px;
+      }
+    }
   </style>
 </head>
 <body>
+
+  <!-- Product Modal Overlay -->
+  <div class="modal-overlay" id="modalOverlay"></div>
+
+  <!-- Product Modal -->
+  <div class="product-modal" id="productModal">
+    <button class="modal-close" id="modalClose">
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+      </svg>
+    </button>
+    
+    <div class="modal-body flex flex-col md:flex-row" style="max-height: 90vh; overflow-y: auto;">
+      <!-- Left: Image Section -->
+      <div class="modal-image-container md:w-1/2 relative">
+        <span class="modal-badge" id="modalCategory">Category</span>
+        <img src="" alt="" class="modal-image" id="modalImage">
+      </div>
+      
+      <!-- Right: Details Section -->
+      <div class="md:w-1/2 p-6 md:p-8">
+        <div class="mb-3">
+          <div class="rating-stars text-sm mb-1" id="modalRating">★★★★★</div>
+          <h2 class="font-display text-2xl md:text-3xl font-bold text-[var(--fg)] mb-1" id="modalTitle">Product Name</h2>
+          <p class="text-[var(--muted)] text-sm" id="modalSubtitle">Subtitle goes here</p>
+        </div>
+
+        <div class="mb-6 pb-4 border-b border-[var(--border)]">
+          <div class="price-tag" id="modalPrice">₹199 <span class="price-unit">/ unit</span></div>
+          <p class="text-xs text-[var(--muted)] mt-1" id="modalPriceNote">Inclusive of all taxes</p>
+        </div>
+
+        <div class="mb-6">
+          <h4 class="font-semibold text-xs text-[var(--muted)] mb-3 uppercase tracking-wider">Key Features</h4>
+          <div class="space-y-2" id="modalFeatures">
+            <!-- Features will be injected here -->
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h4 class="font-semibold text-xs text-[var(--muted)] mb-3 uppercase tracking-wider">Specifications</h4>
+          <div class="grid grid-cols-2 gap-y-2 text-sm" id="modalSpecs">
+            <!-- Specs will be injected here -->
+          </div>
+        </div>
+
+        <button class="inquiry-btn" id="inquiryBtn">Send Inquiry</button>
+
+        <p class="text-xs text-[var(--muted)] mt-4 text-center" id="modalNote">
+          Bulk orders available. Contact us for custom pricing.
+        </p>
+      </div>
+    </div>
+  </div>
 
   <!-- Navigation -->
   <nav class="nav-glass fixed top-0 left-0 right-0 z-50">
@@ -142,7 +354,6 @@
           </a>
           
           <div class="dropdown-menu">
-            <!-- Unified Style Links -->
             <a href="#divine-care" class="dropdown-link">
               <div class="dropdown-icon"><svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg></div>
               <div><div class="font-semibold">Divine Care</div><div class="text-xs text-[var(--muted)]">Pooja & Spiritual</div></div>
@@ -202,7 +413,6 @@
           <h1 class="reveal stagger-1 font-display text-5xl lg:text-7xl font-bold leading-[1.1] mb-6">Modern Hygiene,<br><span class="text-[var(--accent)] italic">Divine Purity.</span></h1>
           <p class="reveal stagger-2 text-lg text-[var(--muted)] mb-10 max-w-md leading-relaxed">Premium contract manufacturing for Home Care and Divine Care. We create products that build your brand.</p>
           <div class="reveal stagger-3">
-            <!-- Removed Request Quote, kept only Explore -->
             <a href="#products" class="btn-primary bg-[var(--accent)] text-white">Explore Products</a>
           </div>
         </div>
@@ -235,29 +445,29 @@
         </div>
         
         <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-          <div class="product-card reveal stagger-1 group">
+          <div class="product-card reveal stagger-1 group" data-product="agradeep-bottle">
             <div class="h-36 overflow-hidden relative bg-amber-50">
               <img src="Agradeep Oil bottle.png" alt="Lamp Oil" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
-            <div class="p-3"><h4 class="font-semibold text-sm">Agradeep Lamp Oil</h4><p class="text-xs text-[var(--muted)]">Bottle</p></div>
+            <div class="p-3"><h4 class="font-semibold text-sm">Agradeep Lamp Oil</h4><p class="text-xs text-[var(--muted)]"></p></div>
           </div>
-          <div class="product-card reveal stagger-2 group">
+          <div class="product-card reveal stagger-2 group" data-product="agradeep-pouch">
             <div class="h-36 overflow-hidden relative bg-amber-50">
               <img src="Agradeep Oil Pouch.jpg" alt="Lamp Oil Pouch" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
-            <div class="p-3"><h4 class="font-semibold text-sm">Agradeep Lamp Oil</h4><p class="text-xs text-[var(--muted)]">Pouch</p></div>
+            <div class="p-3"><h4 class="font-semibold text-sm">Agradeep Lamp Oil Pouch</h4><p class="text-xs text-[var(--muted)]"></p></div>
           </div>
-          <div class="product-card reveal stagger-3 group">
+          <div class="product-card reveal stagger-3 group" data-product="incense-sticks">
             <div class="h-36 overflow-hidden relative bg-amber-50">
               <img src="Incense sticks pack.png" alt="Incense" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
-            <div class="p-3"><h4 class="font-semibold text-sm">Incense Sticks</h4><p class="text-xs text-[var(--muted)]">Premium Pack</p></div>
+            <div class="p-3"><h4 class="font-semibold text-sm">Incense Sticks</h4><p class="text-xs text-[var(--muted)]"></p></div>
           </div>
-          <div class="product-card reveal stagger-4 group">
+          <div class="product-card reveal stagger-4 group" data-product="sambrani">
             <div class="h-36 overflow-hidden relative bg-amber-50">
               <img src="SAMBRANI.png" alt="Sambrani" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
-            <div class="p-3"><h4 class="font-semibold text-sm">Sambrani Box</h4><p class="text-xs text-[var(--muted)]">Traditional</p></div>
+            <div class="p-3"><h4 class="font-semibold text-sm">Sambrani</h4><p class="text-xs text-[var(--muted)]"></p></div>
           </div>
         </div>
       </div>
@@ -273,49 +483,49 @@
         </div>
         
         <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-          <div class="product-card reveal stagger-1 group">
+          <div class="product-card reveal stagger-1 group" data-product="glim-soap-5rs">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="dishwash soap 5rs.png" alt="Glim Soap" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
-            <div class="p-3"><h4 class="font-semibold text-sm">Glim Soap 5RS</h4><p class="text-xs text-[var(--muted)]">Lemon Fresh</p></div>
+            <div class="p-3"><h4 class="font-semibold text-sm">Glim Soap 5RS</h4><p class="text-xs text-[var(--muted)]"></p></div>
           </div>
-          <div class="product-card reveal stagger-2 group">
+          <div class="product-card reveal stagger-2 group" data-product="glim-soap-10rs">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="dishwash soap 10rs.png" alt="Glim Soap" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Glim Soap 10RS</h4><p class="text-xs text-[var(--muted)]">Lemon Fresh</p></div>
           </div>
-          <div class="product-card reveal stagger-3 group">
+          <div class="product-card reveal stagger-3 group" data-product="glim-tub">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="Glim Tub.png" alt="Glim Tub" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
-            <div class="p-3"><h4 class="font-semibold text-sm">Glim Tub</h4><p class="text-xs text-[var(--muted)]">With Free Scrub Pad 10RS</p></div>
+            <div class="p-3"><h4 class="font-semibold text-sm">Glim Tub</h4><p class="text-xs text-[var(--muted)]">With Free Scrub Pad</p></div>
           </div>
-          <div class="product-card reveal stagger-4 group">
+          <div class="product-card reveal stagger-4 group" data-product="glim-tamarind">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="dishwash soap tamr 10rs.png" alt="Tamarind Soap" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Glim Tamarind Soap</h4><p class="text-xs text-[var(--muted)]">10rs</p></div>
           </div>
-          <div class="product-card reveal stagger-1 group">
+          <div class="product-card reveal stagger-1 group" data-product="glim-tamarind-bottle">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="Glim Liquid Bottle tamarind.png" alt="Tamarind Bottle" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Glim Tamarind Bottle</h4><p class="text-xs text-[var(--muted)]">250ml</p></div>
           </div>
-          <div class="product-card reveal stagger-2 group">
+          <div class="product-card reveal stagger-2 group" data-product="glim-pouch">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="glim pouch.png" alt="Pouch" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Dishwash Liquid</h4><p class="text-xs text-[var(--muted)]">Pouch</p></div>
           </div>
-          <div class="product-card reveal stagger-3 group">
+          <div class="product-card reveal stagger-3 group" data-product="glim-bottle-2in1">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="glimBottle 2 in 1.png" alt="Bottle" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Single Bottle</h4><p class="text-xs text-[var(--muted)]">2-in-1</p></div>
           </div>
-          <div class="product-card reveal stagger-4 group">
+          <div class="product-card reveal stagger-4 group" data-product="glim-powder">
             <div class="h-36 overflow-hidden relative bg-cyan-50">
               <img src="GLim dishwash Power  500g.png" alt="350g" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
@@ -335,31 +545,31 @@
         </div>
         
         <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-          <div class="product-card reveal stagger-1 group">
+          <div class="product-card reveal stagger-1 group" data-product="anagha-soap">
             <div class="h-36 overflow-hidden relative bg-blue-50">
               <img src="Anagha soap.jpg" alt="Anagha Soap" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Anagha Soap</h4><p class="text-xs text-[var(--muted)]">Premium Quality</p></div>
           </div>
-          <div class="product-card reveal stagger-2 group">
+          <div class="product-card reveal stagger-2 group" data-product="glim-detergent-soap">
             <div class="h-36 overflow-hidden relative bg-blue-50">
               <img src="Glim Detergent soap.jpg" alt="Glim Soap" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Glim Detergent Soap</h4><p class="text-xs text-[var(--muted)]">Fabric Care</p></div>
           </div>
-          <div class="product-card reveal stagger-3 group">
+          <div class="product-card reveal stagger-3 group" data-product="fabric-conditioner">
             <div class="h-36 overflow-hidden relative bg-blue-50">
               <img src="Fabric conditioner.png" alt="Conditioner" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Glim Fabric Conditioner</h4><p class="text-xs text-[var(--muted)]">Sachet</p></div>
           </div>
-          <div class="product-card reveal stagger-4 group">
+          <div class="product-card reveal stagger-4 group" data-product="matic-liquid">
             <div class="h-36 overflow-hidden relative bg-blue-50">
               <img src="Fabric Condiotioner Container copy.png" alt="Matic Liquid" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Glim Bottle Matic Liquid</h4><p class="text-xs text-[var(--muted)]">Front Load</p></div>
           </div>
-          <div class="product-card reveal stagger-1 group">
+          <div class="product-card reveal stagger-1 group" data-product="glim-detergent-powder">
             <div class="h-36 overflow-hidden relative bg-blue-50">
               <img src="Glim Detergent Powder.png" alt="Powder" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
@@ -367,21 +577,21 @@
           </div>
           
           <div class="col-span-4 border-t border-dashed border-blue-200 my-4"></div>
-          <h4 class="col-span-4 font-semibold text-gray-700 mb-2">Aramane Pallakki Premium Powders</h4>
+          <h4 class="col-span-4 font-semibold text-gray-700 mb-2 mt-2">Aramane Pallakki Premium Powders</h4>
 
-          <div class="product-card reveal stagger-1 group">
+          <div class="product-card reveal stagger-1 group" data-product="pallakki-150g">
             <div class="h-36 overflow-hidden relative bg-indigo-50">
               <img src="Aramane Pallakki 150 g.png" alt="150g" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Pallakki Powder</h4><p class="text-xs text-[var(--muted)]">150g</p></div>
           </div>
-          <div class="product-card reveal stagger-2 group">
+          <div class="product-card reveal stagger-2 group" data-product="pallakki-500g">
             <div class="h-36 overflow-hidden relative bg-indigo-50">
               <img src="Aramane Pallakki 500g.png" alt="500g" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Pallakki Powder</h4><p class="text-xs text-[var(--muted)]">500g</p></div>
           </div>
-          <div class="product-card reveal stagger-3 group">
+          <div class="product-card reveal stagger-3 group" data-product="pallakki-1kg">
             <div class="h-36 overflow-hidden relative bg-indigo-50">
               <img src="Aramane Pallakki 1kg.png" alt="1kg" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
@@ -401,19 +611,19 @@
         </div>
         
         <div class="grid grid-cols-2 md:grid-cols-4 gap-5">
-          <div class="product-card reveal stagger-1 group">
+          <div class="product-card reveal stagger-1 group" data-product="stay-shine-all">
             <div class="h-36 overflow-hidden relative bg-violet-50">
               <img src="Phenyle all flavour 2.png" alt="Stay Shine" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Stay Shine</h4><p class="text-xs text-[var(--muted)]">All Flavours</p></div>
           </div>
-          <div class="product-card reveal stagger-2 group">
+          <div class="product-card reveal stagger-2 group" data-product="stay-shine-pack2">
             <div class="h-36 overflow-hidden relative bg-violet-50">
               <img src="Phenyle & Toilet Cleaner (1).png" alt="Pack 2" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
             <div class="p-3"><h4 class="font-semibold text-sm">Stay Shine Pack 2</h4><p class="text-xs text-[var(--muted)]">Value Pack</p></div>
           </div>
-          <div class="product-card reveal stagger-3 group">
+          <div class="product-card reveal stagger-3 group" data-product="stay-shine-pack3">
             <div class="h-36 overflow-hidden relative bg-violet-50">
               <img src="Stay shine (1).png" alt="Pack 3" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
             </div>
@@ -440,7 +650,7 @@
     </div>
   </section>
 
-  <!-- CONTACT SECTION (Redesigned) -->
+  <!-- CONTACT SECTION -->
   <section id="contact" class="py-20 bg-[var(--bg)]">
     <div class="max-w-7xl mx-auto px-6">
       <div class="grid lg:grid-cols-2 gap-16 items-start">
@@ -537,6 +747,656 @@
 
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
+
+    // ==========================================
+    // PRODUCT DATA - EDIT THIS FOR EACH PRODUCT
+    // ==========================================
+    const productsData = {
+      // DIVINE CARE PRODUCTS
+      "agradeep-bottle": {
+        title: "Agradeep Lamp Oil",
+        subtitle: "Pure & Long Burning | 1 Liter Bottle",
+        category: "Divine Care",
+        price: "₹149",
+        priceUnit: "/ 1L Bottle",
+        priceNote: "Bulk pricing available for orders above 50 units",
+        rating: "★★★★★",
+        image: "Agradeep Oil bottle.png",
+        features: [
+          { icon: "fire", text: "Smoke-free burning for pure atmosphere" },
+          { icon: "clock", text: "Extended burn time - up to 8 hours" },
+          { icon: "leaf", text: "Made from natural ingredients" },
+          { icon: "shield", text: "Safe for indoor use" }
+        ],
+        specs: {
+          "Volume": "1 Liter",
+          "Pack Type": "Bottle",
+          "Burn Time": "8+ hours",
+          "Shelf Life": "24 months"
+        },
+        note: "Ideal for temples, homes, and religious ceremonies"
+      },
+      "agradeep-pouch": {
+        title: "Agradeep Lamp Oil",
+        subtitle: "Pure & Long Burning | Pouch Pack",
+        category: "Divine Care",
+        price: "₹25",
+        priceUnit: "/ 100ml Pouch",
+        priceNote: "Affordable everyday pooja essential",
+        rating: "★★★★☆",
+        image: "Agradeep Oil Pouch.jpg",
+        features: [
+          { icon: "droplet", text: "Easy-pour pouch design" },
+          { icon: "fire", text: "Clean & smokeless flame" },
+          { icon: "leaf", text: "Traditional formulation" },
+          { icon: "refresh", text: "Fresh batch guaranteed" }
+        ],
+        specs: {
+          "Volume": "100ml",
+          "Pack Type": "Pouch",
+          "Burn Time": "4+ hours",
+          "Shelf Life": "18 months"
+        },
+        note: "Perfect for daily household use"
+      },
+      "incense-sticks": {
+        title: "Premium Incense Sticks",
+        subtitle: "Handcrafted Agarbatti Pack",
+        category: "Divine Care",
+        price: "₹45",
+        priceUnit: "/ Pack",
+        priceNote: "Multiple fragrances available",
+        rating: "★★★★★",
+        image: "Incense sticks pack.png",
+        features: [
+          { icon: "wind", text: "Long-lasting fragrance spread" },
+          { icon: "leaf", text: "Natural essential oils used" },
+          { icon: "clock", text: "45+ minutes burn time per stick" },
+          { icon: "package", text: "30 sticks per pack" }
+        ],
+        specs: {
+          "Sticks/Pack": "30 pieces",
+          "Burn Time": "45 min each",
+          "Fragrances": "Sandal, Rose, Jasmine, Mogra",
+          "Length": "8 inches"
+        },
+        note: "Available in Sandal, Rose, Jasmine & Mogra variants"
+      },
+      "sambrani": {
+        title: "Premium Sambrani",
+        subtitle: "Traditional Benzoin Resin Cups",
+        category: "Divine Care",
+        price: "₹60",
+        priceUnit: "/ Box",
+        priceNote: "10 cups per box",
+        rating: "★★★★★",
+        image: "SAMBRANI.png",
+        features: [
+          { icon: "wind", text: "Purifies the atmosphere" },
+          { icon: "fire", text: "Easy to light & use" },
+          { icon: "leaf", text: "Natural benzoin resin" },
+          { icon: "home", text: "Traditional puja essential" }
+        ],
+        specs: {
+          "Cups/Box": "10 pieces",
+          "Burn Time": "15-20 min each",
+          "Type": "Charcoal-free",
+          "Fragrance": "Divine Sambrani"
+        },
+        note: "Perfect for daily aarti and special occasions"
+      },
+
+      // DISHWASH PRODUCTS
+      "glim-soap-5rs": {
+        title: "Glim Dishwash Soap",
+        subtitle: "Lemon Fresh | 5 Rupee Bar",
+        category: "Dishwash",
+        price: "₹5",
+        priceUnit: "/ Bar",
+        priceNote: "Economy pack for daily use",
+        rating: "★★★★☆",
+        image: "dishwash soap 5rs.png",
+        features: [
+          { icon: "sparkles", text: "Cuts through tough grease" },
+          { icon: "lemon", text: "Fresh lemon fragrance" },
+          { icon: "droplet", text: "Gentle on hands" },
+          { icon: "shield", text: "Antibacterial properties" }
+        ],
+        specs: {
+          "Weight": "50g",
+          "Fragrance": "Lemon Fresh",
+          "Pack Type": "Single Bar",
+          "pH Level": "Skin-safe"
+        },
+        note: "Perfect for small families and daily use"
+      },
+      "glim-soap-10rs": {
+        title: "Glim Dishwash Soap",
+        subtitle: "Lemon Fresh | Value Pack",
+        category: "Dishwash",
+        price: "₹10",
+        priceUnit: "/ Bar",
+        priceNote: "More value, better cleaning",
+        rating: "★★★★★",
+        image: "dishwash soap 10rs.png",
+        features: [
+          { icon: "sparkles", text: "Powerful grease removal" },
+          { icon: "lemon", text: "Long-lasting lemon scent" },
+          { icon: "droplet", text: "Moisturizing formula" },
+          { icon: "leaf", text: "Eco-friendly ingredients" }
+        ],
+        specs: {
+          "Weight": "100g",
+          "Fragrance": "Lemon Fresh",
+          "Pack Type": "Single Bar",
+          "pH Level": "Skin-safe"
+        },
+        note: "Most popular size for Indian households"
+      },
+      "glim-tub": {
+        title: "Glim Dishwash Tub",
+        subtitle: "With Free Scrub Pad | 10 Rupee Pack",
+        category: "Dishwash",
+        price: "₹10",
+        priceUnit: "/ Tub",
+        priceNote: "Includes free scrub pad",
+        rating: "★★★★★",
+        image: "Glim Tub.png",
+        features: [
+          { icon: "package", text: "Convenient tub packaging" },
+          { icon: "gift", text: "Free scrub pad included" },
+          { icon: "sparkles", text: "Superior cleaning power" },
+          { icon: "lemon", text: "Fresh fragrance" }
+        ],
+        specs: {
+          "Weight": "80g",
+          "Includes": "Free Scrub Pad",
+          "Pack Type": "Tub",
+          "Fragrance": "Lemon"
+        },
+        note: "Best value - soap + scrub pad combo"
+      },
+      "glim-tamarind": {
+        title: "Glim Tamarind Soap",
+        subtitle: "Natural Tamarind Extract | 10 Rupee",
+        category: "Dishwash",
+        price: "₹10",
+        priceUnit: "/ Bar",
+        priceNote: "Natural cleaning power",
+        rating: "★★★★★",
+        image: "dishwash soap tamr 10rs.png",
+        features: [
+          { icon: "leaf", text: "Natural tamarind extract" },
+          { icon: "sparkles", text: "Removes oil stains easily" },
+          { icon: "shield", text: "Gentle on hands" },
+          { icon: "refresh", text: "No chemical after-smell" }
+        ],
+        specs: {
+          "Weight": "100g",
+          "Key Ingredient": "Tamarind Extract",
+          "Pack Type": "Single Bar",
+          "Type": "Natural"
+        },
+        note: "Traditional tamarind cleaning, modern convenience"
+      },
+      "glim-tamarind-bottle": {
+        title: "Glim Tamarind Liquid",
+        subtitle: "Dishwash Liquid | 250ml Bottle",
+        category: "Dishwash",
+        price: "₹65",
+        priceUnit: "/ 250ml",
+        priceNote: "Concentrated formula",
+        rating: "★★★★★",
+        image: "Glim Liquid Bottle tamarind.png",
+        features: [
+          { icon: "droplet", text: "Concentrated formula - lasts longer" },
+          { icon: "leaf", text: "Natural tamarind goodness" },
+          { icon: "sparkles", text: "Cuts grease in seconds" },
+          { icon: "lemon", text: "Pleasant natural scent" }
+        ],
+        specs: {
+          "Volume": "250ml",
+          "Type": "Liquid",
+          "Key Ingredient": "Tamarind",
+          "Usage": "2-3 drops per wash"
+        },
+        note: "One bottle lasts up to 100 washes"
+      },
+      "glim-pouch": {
+        title: "Glim Dishwash Liquid",
+        subtitle: "Refill Pouch Pack",
+        category: "Dishwash",
+        price: "₹15",
+        priceUnit: "/ Pouch",
+        priceNote: "Economical refill option",
+        rating: "★★★★☆",
+        image: "glim pouch.png",
+        features: [
+          { icon: "droplet", text: "Easy-pour pouch" },
+          { icon: "sparkles", text: "Tough on grease" },
+          { icon: "leaf", text: "Gentle on hands" },
+          { icon: "refresh", text: "Fresh fragrance" }
+        ],
+        specs: {
+          "Volume": "50ml",
+          "Type": "Liquid Pouch",
+          "Fragrance": "Lemon Fresh",
+          "Usage": "2-3 drops per wash"
+        },
+        note: "Perfect for travel or trial"
+      },
+      "glim-bottle-2in1": {
+        title: "Glim 2-in-1 Bottle",
+        subtitle: "Dishwash + Scrub Pad Combo",
+        category: "Dishwash",
+        price: "₹45",
+        priceUnit: "/ Pack",
+        priceNote: "Complete cleaning solution",
+        rating: "★★★★★",
+        image: "glimBottle 2 in 1.png",
+        features: [
+          { icon: "gift", text: "Free scrub pad included" },
+          { icon: "droplet", text: "Premium liquid formula" },
+          { icon: "sparkles", text: "Superior shine" },
+          { icon: "shield", text: "Gentle on hands" }
+        ],
+        specs: {
+          "Volume": "200ml",
+          "Includes": "Scrub Pad",
+          "Type": "Liquid",
+          "Fragrance": "Lemon"
+        },
+        note: "Complete dishwashing kit"
+      },
+      "glim-powder": {
+        title: "Glim Dishwash Powder",
+        subtitle: "Heavy Duty Cleaning | 500g",
+        category: "Dishwash",
+        price: "₹35",
+        priceUnit: "/ 500g",
+        priceNote: "Best for heavy grease",
+        rating: "★★★★☆",
+        image: "GLim dishwash Power  500g.png",
+        features: [
+          { icon: "sparkles", text: "Heavy-duty grease cutter" },
+          { icon: "shield", text: "Removes burnt food stains" },
+          { icon: "droplet", text: "Economical powder form" },
+          { icon: "package", text: "Easy storage pack" }
+        ],
+        specs: {
+          "Weight": "500g",
+          "Type": "Powder",
+          "Usage": "For heavy utensils",
+          "Shelf Life": "24 months"
+        },
+        note: "Ideal for commercial kitchens"
+      },
+
+      // DETERGENT PRODUCTS
+      "anagha-soap": {
+        title: "Anagha Detergent Soap",
+        subtitle: "Premium Fabric Care Bar",
+        category: "Detergents",
+        price: "₹15",
+        priceUnit: "/ Bar",
+        priceNote: "Premium quality detergent",
+        rating: "★★★★★",
+        image: "Anagha soap.jpg",
+        features: [
+          { icon: "sparkles", text: "Brightens whites naturally" },
+          { icon: "shield", text: "Protects fabric color" },
+          { icon: "droplet", text: "Removes tough stains" },
+          { icon: "leaf", text: "Gentle on clothes" }
+        ],
+        specs: {
+          "Weight": "150g",
+          "Type": "Detergent Bar",
+          "Fragrance": "Fresh Floral",
+          "Best For": "All fabrics"
+        },
+        note: "Trusted by generations"
+      },
+      "glim-detergent-soap": {
+        title: "Glim Detergent Soap",
+        subtitle: "Fabric Care Expert",
+        category: "Detergents",
+        price: "₹12",
+        priceUnit: "/ Bar",
+        priceNote: "Value for money",
+        rating: "★★★★☆",
+        image: "Glim Detergent soap.jpg",
+        features: [
+          { icon: "sparkles", text: "Powerful stain removal" },
+          { icon: "droplet", text: "Works in hard water" },
+          { icon: "shield", text: "Color protection" },
+          { icon: "refresh", text: "Long-lasting fragrance" }
+        ],
+        specs: {
+          "Weight": "120g",
+          "Type": "Detergent Bar",
+          "Water Type": "All water types",
+          "Fragrance": "Fresh"
+        },
+        note: "Best seller in value segment"
+      },
+      "fabric-conditioner": {
+        title: "Glim Fabric Conditioner",
+        subtitle: "Soft & Fresh Sachet",
+        category: "Detergents",
+        price: "₹5",
+        priceUnit: "/ Sachet",
+        priceNote: "Premium softness",
+        rating: "★★★★★",
+        image: "Fabric conditioner.png",
+        features: [
+          { icon: "sparkles", text: "Silky soft clothes" },
+          { icon: "wind", text: "Long-lasting freshness" },
+          { icon: "shield", text: "Reduces static cling" },
+          { icon: "refresh", text: "Easy iron formula" }
+        ],
+        specs: {
+          "Type": "Sachet",
+          "Usage": "1 per wash load",
+          "Fragrance": "Premium Floral",
+          "Effect": "Anti-static"
+        },
+        note: "For premium fabric care"
+      },
+      "matic-liquid": {
+        title: "Glim Matic Liquid",
+        subtitle: "Front Load Detergent",
+        category: "Detergents",
+        price: "₹120",
+        priceUnit: "/ 1L Bottle",
+        priceNote: "Machine-friendly formula",
+        rating: "★★★★★",
+        image: "Fabric Condiotioner Container copy.png",
+        features: [
+          { icon: "sparkles", text: "Designed for front load" },
+          { icon: "droplet", text: "Low foam technology" },
+          { icon: "shield", text: "Protects machine parts" },
+          { icon: "refresh", text: "Superior cleaning" }
+        ],
+        specs: {
+          "Volume": "1 Liter",
+          "Type": "Liquid",
+          "Machine Type": "Front Load",
+          "Doses": "~30 washes"
+        },
+        note: "Best for front-loading machines"
+      },
+      "glim-detergent-powder": {
+        title: "Glim Detergent Powder",
+        subtitle: "All Purpose | 500g",
+        category: "Detergents",
+        price: "₹55",
+        priceUnit: "/ 500g",
+        priceNote: "Hand & machine wash",
+        rating: "★★★★☆",
+        image: "Glim Detergent Powder.png",
+        features: [
+          { icon: "sparkles", text: "Tough stain fighter" },
+          { icon: "droplet", text: "Works in all water" },
+          { icon: "shield", text: "Color safe formula" },
+          { icon: "refresh", text: "Fresh fragrance" }
+        ],
+        specs: {
+          "Weight": "500g",
+          "Type": "Powder",
+          "Wash Type": "Hand & Machine",
+          "Fragrance": "Fresh"
+        },
+        note: "Versatile detergent for all needs"
+      },
+      "pallakki-150g": {
+        title: "Aramane Pallakki Powder",
+        subtitle: "Premium Detergent | 150g",
+        category: "Premium Detergents",
+        price: "₹35",
+        priceUnit: "/ 150g",
+        priceNote: "Premium quality powder",
+        rating: "★★★★★",
+        image: "Aramane Pallakki 150 g.png",
+        features: [
+          { icon: "sparkles", text: "Premium cleaning agents" },
+          { icon: "shield", text: "Fabric brightening" },
+          { icon: "droplet", text: "Gentle on clothes" },
+          { icon: "refresh", text: "Royal fragrance" }
+        ],
+        specs: {
+          "Weight": "150g",
+          "Type": "Premium Powder",
+          "Grade": "Premium",
+          "Fragrance": "Royal"
+        },
+        note: "For those who demand the best"
+      },
+      "pallakki-500g": {
+        title: "Aramane Pallakki Powder",
+        subtitle: "Premium Detergent | 500g",
+        category: "Premium Detergents",
+        price: "₹95",
+        priceUnit: "/ 500g",
+        priceNote: "Family pack value",
+        rating: "★★★★★",
+        image: "Aramane Pallakki 500g.png",
+        features: [
+          { icon: "sparkles", text: "Superior stain removal" },
+          { icon: "shield", text: "Color protection" },
+          { icon: "droplet", text: "Premium ingredients" },
+          { icon: "refresh", text: "Long-lasting freshness" }
+        ],
+        specs: {
+          "Weight": "500g",
+          "Type": "Premium Powder",
+          "Grade": "Premium",
+          "Fragrance": "Royal"
+        },
+        note: "Best value premium pack"
+      },
+      "pallakki-1kg": {
+        title: "Aramane Pallakki Powder",
+        subtitle: "Premium Detergent | 1kg Family Pack",
+        category: "Premium Detergents",
+        price: "₹175",
+        priceUnit: "/ 1kg",
+        priceNote: "Maximum value pack",
+        rating: "★★★★★",
+        image: "Aramane Pallakki 1kg.png",
+        features: [
+          { icon: "sparkles", text: "Premium formula" },
+          { icon: "shield", text: "Complete fabric care" },
+          { icon: "droplet", text: "Suitable for all fabrics" },
+          { icon: "package", text: "Family size pack" }
+        ],
+        specs: {
+          "Weight": "1kg",
+          "Type": "Premium Powder",
+          "Grade": "Premium",
+          "Fragrance": "Royal"
+        },
+        note: "Best savings for families"
+      },
+
+      // TOILET CLEANING
+      "stay-shine-all": {
+        title: "Stay Shine Phenyl",
+        subtitle: "All Flavours Available",
+        category: "Toilet Cleaning",
+        price: "₹45",
+        priceUnit: "/ Bottle",
+        priceNote: "Multiple fragrances",
+        rating: "★★★★★",
+        image: "Phenyle all flavour 2.png",
+        features: [
+          { icon: "sparkles", text: "Kills 99.9% germs" },
+          { icon: "wind", text: "Fresh fragrance options" },
+          { icon: "shield", text: "Long-lasting protection" },
+          { icon: "droplet", text: "Easy to use" }
+        ],
+        specs: {
+          "Volume": "500ml",
+          "Type": "Phenyl",
+          "Fragrances": "Pine, Lavender, Floral",
+          "Germ Kill": "99.9%"
+        },
+        note: "Available in Pine, Lavender & Floral"
+      },
+      "stay-shine-pack2": {
+        title: "Stay Shine Value Pack",
+        subtitle: "Phenyl + Toilet Cleaner Combo",
+        category: "Toilet Cleaning",
+        price: "₹85",
+        priceUnit: "/ Combo",
+        priceNote: "Complete bathroom cleaning",
+        rating: "★★★★★",
+        image: "Phenyle & Toilet Cleaner (1).png",
+        features: [
+          { icon: "gift", text: "Combo pack savings" },
+          { icon: "sparkles", text: "Complete cleaning kit" },
+          { icon: "shield", text: "All-in-one solution" },
+          { icon: "refresh", text: "Fresh bathroom" }
+        ],
+        specs: {
+          "Includes": "Phenyl + Toilet Cleaner",
+          "Type": "Combo Pack",
+          "Total Items": "2 bottles",
+          "Savings": "15% off MRP"
+        },
+        note: "Best value bathroom combo"
+      },
+      "stay-shine-pack3": {
+        title: "Stay Shine Family Pack",
+        subtitle: "Complete Bathroom Care Kit",
+        category: "Toilet Cleaning",
+        price: "₹120",
+        priceUnit: "/ Kit",
+        priceNote: "Full month supply",
+        rating: "★★★★★",
+        image: "Stay shine (1).png",
+        features: [
+          { icon: "package", text: "Complete family pack" },
+          { icon: "sparkles", text: "Full bathroom cleaning" },
+          { icon: "shield", text: "All germ protection" },
+          { icon: "refresh", text: "Multiple products" }
+        ],
+        specs: {
+          "Includes": "Phenyl + Cleaner + Freshener",
+          "Type": "Family Pack",
+          "Total Items": "3 products",
+          "Savings": "20% off MRP"
+        },
+        note: "Complete bathroom care for a month"
+      }
+    };
+
+    // ==========================================
+    // MODAL FUNCTIONALITY
+    // ==========================================
+    const modalOverlay = document.getElementById('modalOverlay');
+    const productModal = document.getElementById('productModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalImage = document.getElementById('modalImage');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSubtitle = document.getElementById('modalSubtitle');
+    const modalCategory = document.getElementById('modalCategory');
+    const modalPrice = document.getElementById('modalPrice');
+    const modalPriceNote = document.getElementById('modalPriceNote');
+    const modalRating = document.getElementById('modalRating');
+    const modalFeatures = document.getElementById('modalFeatures');
+    const modalSpecs = document.getElementById('modalSpecs');
+    const modalNote = document.getElementById('modalNote');
+    const inquiryBtn = document.getElementById('inquiryBtn');
+
+    let currentProduct = null;
+
+    // Feature icons SVG
+    const featureIcons = {
+      fire: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z"></path></svg>',
+      clock: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>',
+      leaf: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l-4 4 4 4m-4-4h3.5a2.5 2.5 0 010 5H12"></path></svg>',
+      shield: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>',
+      sparkles: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l-4 4 4 4"></path></svg>',
+      droplet: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707"></path></svg>',
+      wind: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>',
+      package: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>',
+      gift: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7"></path></svg>',
+      refresh: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>',
+      lemon: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>',
+      home: '<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>'
+    };
+
+    // Open modal function
+    function openModal(productId) {
+      const product = productsData[productId];
+      if (!product) return;
+
+      currentProduct = product;
+
+      // Populate modal
+      modalImage.src = product.image;
+      modalImage.alt = product.title;
+      modalTitle.textContent = product.title;
+      modalSubtitle.textContent = product.subtitle;
+      modalCategory.textContent = product.category;
+      modalRating.textContent = product.rating;
+      modalPrice.innerHTML = `${product.price} <span class="price-unit">${product.priceUnit}</span>`;
+      modalPriceNote.textContent = product.priceNote;
+      modalNote.textContent = product.note;
+
+      // Populate features
+      modalFeatures.innerHTML = product.features.map(f => `
+        <div class="feature-item">
+          <div class="w-7 h-7 rounded-md bg-[var(--accent)]/10 flex items-center justify-center text-[var(--accent)] flex-shrink-0">
+            ${featureIcons[f.icon] || featureIcons.sparkles}
+          </div>
+          <span class="text-sm text-[var(--fg)]">${f.text}</span>
+        </div>
+      `).join('');
+
+      // Populate specs
+      modalSpecs.innerHTML = Object.entries(product.specs).map(([key, value]) => `
+        <div class="flex justify-between py-2 border-b border-[var(--border)]">
+          <span class="text-[var(--muted)]">${key}</span>
+          <span class="font-medium text-[var(--fg)]">${value}</span>
+        </div>
+      `).join('');
+
+      // Show modal
+      modalOverlay.classList.add('active');
+      productModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Close modal function
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      productModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // Event listeners for modal
+    modalClose.addEventListener('click', closeModal);
+    modalOverlay.addEventListener('click', closeModal);
+    
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+
+    // Inquiry button - scroll to contact
+    inquiryBtn.addEventListener('click', () => {
+      closeModal();
+      document.getElementById('contact').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Add click event to all product cards
+    document.querySelectorAll('.product-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const productId = card.dataset.product;
+        if (productId) openModal(productId);
+      });
+    });
 
     // Mobile Menu
     const mobileMenuBtn = document.getElementById("mobileMenuBtn");
