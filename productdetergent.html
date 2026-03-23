@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detergent Products | Auctum Solutions</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8fafc;
+    }
+
+    /* Product Card */
+    .product-card {
+      background: white;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .product-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .product-img {
+      width: 100%;
+      height: 200px;
+      object-fit: contain;
+      background: #f9fafb;
+      padding: 10px;
+    }
+
+    /* Popup */
+    .popup {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    .popup-content {
+      background: white;
+      padding: 40px;
+      border-radius: 10px;
+      max-width: 800px;
+      width: 90%;
+      display: flex;
+      gap: 30px;
+      position: relative;
+    }
+    .popup img {
+      width: 300px;
+      border-radius: 8px;
+    }
+    .close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+      z-index: 101;
+    }
+    
+    @media (max-width: 768px) {
+      .popup-content {
+        flex-direction: column;
+        padding: 20px;
+      }
+      .popup img {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== HEADER ==================== -->
+  <div class="bg-slate-800 text-white py-4 px-6">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <a href="index.html.html" class="text-xl font-bold hover:text-gray-300 transition-colors">
+        Auctum Solutions Pvt. Ltd.
+      </a>
+      
+      <div class="flex items-center gap-2">
+        <svg class="w-4 h-4 text-[#B4844C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+        </svg>
+        <span class="text-sm">Sales Support: <strong>+91 9946133337</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==================== DETERGENT PRODUCT SECTION ==================== -->
+  <div class="max-w-6xl mx-auto py-16 px-6">
+    <h1 class="text-3xl font-bold mb-2">Detergent Collection</h1>
+    <p class="text-gray-500 mb-10">Premium cleaning powders and liquids for every need.</p>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+      
+      <!-- 1. Top Load Aramane Pallakki -->
+      <div class="product-card" onclick="openPopup('popup-aramane')">
+        <img src="ARAMANE front.png" class="product-img" alt="Aramane Pallakki">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Aramane Pallakki</h3>
+          <p class="text-gray-500 text-sm">Top Load Powder (150g - 1kg)</p>
+        </div>
+      </div>
+
+      <!-- 2. Top Load Liquid -->
+      <div class="product-card" onclick="openPopup('popup-topliquid')">
+        <img src="aramane liquid front.png" class="product-img" alt="Top Load Liquid">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Top Load Liquid</h3>
+          <p class="text-gray-500 text-sm">High efficiency liquid</p>
+        </div>
+      </div>
+
+      <!-- 3. Front Load Glim Powder -->
+      <div class="product-card" onclick="openPopup('popup-glimpowder')">
+        <img src="Glim Detergent Powder.png" class="product-img" alt="Glim Detergent Powder">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Glim Detergent Powder</h3>
+          <p class="text-gray-500 text-sm">Front Load (150g - 1kg)</p>
+        </div>
+      </div>
+
+      <!-- 4. Glim Liquid -->
+      <div class="product-card" onclick="openPopup('popup-glimliquid')">
+        <img src="detergent Fabric Condiotioner Container copy.png" class="product-img" alt="Glim Liquid">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Glim Liquid</h3>
+          <p class="text-gray-500 text-sm">Premium front load liquid</p>
+        </div>
+      </div>
+
+      <!-- 5. Fabric Cloth Liquid -->
+      <div class="product-card" onclick="openPopup('popup-fabric')">
+        <img src="detergent Fabric conditioner.png" class="product-img" alt="Fabric Cloth Liquid">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Fabric Cloth Liquid</h3>
+          <p class="text-gray-500 text-sm">Small pack convenience</p>
+        </div>
+      </div>
+
+      <!-- 6. Detergent Soap -->
+      <div class="product-card" onclick="openPopup('popup-detersoap')">
+        <img src="detergent soap.jpg" class="product-img" alt="Detergent Soap">
+        <div class="p-4">
+          <h3 class="font-bold text-lg">Detergent Soap</h3>
+          <p class="text-gray-500 text-sm">Heavy duty hand wash</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== ALL PRODUCTS LIST SECTION ==================== -->
+  <section class="py-16 bg-white border-t border-gray-200">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="text-center mb-12">
+        <h2 class="text-2xl font-bold text-slate-800 mb-2">Our Complete Product Range</h2>
+        <p class="text-gray-500">We manufacture a wide variety of quality products</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm text-gray-600">
+        
+        <!-- Column 1: Divine Care -->
+        <div>
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 border-[#B4844C]">Divine Care</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Incense Sticks
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Sambrani Cups
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Lamp Oil
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Pooja Oil
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 2: Dishwash -->
+        <div>
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 border-[#B4844C]">Dishwash</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Dishwash Bar
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Dishwash Gel
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Dishwash Scrub
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Liquid Detergent
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 3: Detergents -->
+        <div>
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 border-[#B4844C]">Detergents</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Detergent Powder
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Detergent Cake
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Fabric Whitener
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Liquid Blue
+            </li>
+          </ul>
+        </div>
+
+        <!-- Column 4: Toilet Cleaning -->
+        <div>
+          <h3 class="font-bold text-slate-800 mb-4 border-b pb-2 border-[#B4844C]">Toilet Cleaning</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Phenyl (All Flavours)
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Toilet Cleaner
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Bathroom Acid
+            </li>
+            <li class="flex items-center gap-2">
+              <span class="w-1.5 h-1.5 bg-[#B4844C] rounded-full"></span>Floor Cleaners
+            </li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== CONTACT FOOTER ==================== -->
+  <footer class="bg-slate-800 text-white pt-12 pb-8">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8">
+        
+        <!-- Company Info -->
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-[#B4844C]">Auctum Solutions Pvt. Ltd.</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Powering brands with purity. Leading contract manufacturers for Home Care and Divine Care products.
+          </p>
+        </div>
+
+        <!-- Contact Info -->
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-[#B4844C]">Contact Us</h3>
+          <div class="space-y-3 text-sm text-gray-400">
+            <div class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-1 text-[#B4844C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              <span>+91 9946133337 / +91 9900020961</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-1 text-[#B4844C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <span>info@auctumsolutions.com</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-1 text-[#B4844C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+              </svg>
+              <span>www.auctumsolutions.com</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Address Info -->
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-[#B4844C]">Address</h3>
+          <div class="space-y-3 text-sm text-gray-400">
+            <p><strong class="text-white">Bengaluru:</strong><br>Shed #27, DITPL, KIADB, Doddaballapur - 561203</p>
+            <p><strong class="text-white">Mandya:</strong><br>P-45, Tubinkere Industrial Estate, Mandya - 571 402</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-gray-700 pt-6 text-center text-xs text-gray-500">
+        © 2024 Auctum Solutions Pvt. Ltd. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==================== PRODUCT POPUPS ==================== -->
+
+  <!-- Popup 1: Aramane Pallakki -->
+  <div class="popup" id="popup-aramane">
+    <div class="close" onclick="closePopup('popup-aramane')">✕</div>
+    <div class="popup-content">
+      <img src="ARAMANE front.png" alt="Aramane Pallakki">
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Aramane Pallakki (Top Load)</h2>
+        <p class="text-gray-600 mb-4">
+          Specially formulated for top load washing machines. 
+          Superior cleaning power that removes tough stains while protecting fabric colors.
+        </p>
+        <p class="mb-2"><b>Available Sizes:</b> 150g, 500g, 1kg</p>
+        <p class="mb-2"><b>Type:</b> Machine Powder (Top Load)</p>
+        <p><b>Fragrance:</b> Fresh Floral</p>
+        <button class="mt-6 bg-[#B4844C] text-white px-6 py-2 rounded hover:bg-[#9A7240] transition-colors">
+          Enquire Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup 2: Top Load Liquid -->
+  <div class="popup" id="popup-topliquid">
+    <div class="close" onclick="closePopup('popup-topliquid')">✕</div>
+    <div class="popup-content">
+      <img src="aramane liquid front.png" alt="Top Load Liquid">
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Top Load Liquid</h2>
+        <p class="text-gray-600 mb-4">
+          High-efficiency liquid detergent designed for top load machines. 
+          Dissolves instantly leaving no residue on clothes.
+        </p>
+        <p class="mb-2"><b>Type:</b> Liquid Detergent</p>
+        <p class="mb-2"><b>Pack Sizes:</b> 500ml, 1L, 5L</p>
+        <p><b>Benefit:</b> No residue, Brightens whites</p>
+        <button class="mt-6 bg-[#B4844C] text-white px-6 py-2 rounded hover:bg-[#9A7240] transition-colors">
+          Enquire Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup 3: Glim Powder -->
+  <div class="popup" id="popup-glimpowder">
+    <div class="close" onclick="closePopup('popup-glimpowder')">✕</div>
+    <div class="popup-content">
+      <img src="detergent Aramane Pallakki 1kg.png" alt="Glim Powder">
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Glim Detergent Powder (Front Load)</h2>
+        <p class="text-gray-600 mb-4">
+          Advanced low-suds formula specifically engineered for front load washing machines. 
+          Deep clean action with every wash.
+        </p>
+        <p class="mb-2"><b>Available Sizes:</b> 150g, 500g, 1kg</p>
+        <p class="mb-2"><b>Type:</b> Machine Powder (Front Load)</p>
+        <p><b>Feature:</b> Low foam, High efficiency</p>
+        <button class="mt-6 bg-[#B4844C] text-white px-6 py-2 rounded hover:bg-[#9A7240] transition-colors">
+          Enquire Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup 4: Glim Liquid -->
+  <div class="popup" id="popup-glimliquid">
+    <div class="close" onclick="closePopup('popup-glimliquid')">✕</div>
+    <div class="popup-content">
+      <img src="detergent Fabric Condiotioner Container copy.png" alt="Glim Liquid">
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Glim Liquid</h2>
+        <p class="text-gray-600 mb-4">
+          Premium liquid detergent for front load machines. 
+          Provides a powerful clean while being gentle on delicate fabrics.
+        </p>
+        <p class="mb-2"><b>Type:</b> Liquid Detergent</p>
+        <p class="mb-2"><b>Variants:</b> Regular & Sensitive Skin</p>
+        <p><b>Packaging:</b> Bottle & Pouch</p>
+        <button class="mt-6 bg-[#B4844C] text-white px-6 py-2 rounded hover:bg-[#9A7240] transition-colors">
+          Enquire Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup 5: Fabric Cloth Liquid -->
+  <div class="popup" id="popup-fabric">
+    <div class="close" onclick="closePopup('popup-fabric')">✕</div>
+    <div class="popup-content">
+      <img src="detergent Fabric conditioner.png" alt="Fabric Cloth Liquid">
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Fabric Cloth Liquid</h2>
+        <p class="text-gray-600 mb-4">
+          Convenient small pack liquid detergent for quick washes. 
+          Perfect for travel or small laundry loads.
+        </p>
+        <p class="mb-2"><b>Pack Size:</b> Small Sachet / Bottle</p>
+        <p class="mb-2"><b>Use:</b> Ideal for hand wash & machine</p>
+        <p><b>Fragrance:</b> Long lasting freshness</p>
+        <button class="mt-6 bg-[#B4844C] text-white px-6 py-2 rounded hover:bg-[#9A7240] transition-colors">
+          Enquire Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup 6: Detergent Soap -->
+  <div class="popup" id="popup-detersoap">
+    <div class="close" onclick="closePopup('popup-detersoap')">✕</div>
+    <div class="popup-content">
+      <img src="Glim Detergent soap.jpg" alt="Detergent Soap">
+      <div>
+        <h2 class="text-2xl font-bold mb-4">Detergent Soap</h2>
+        <p class="text-gray-600 mb-4">
+          Heavy-duty laundry bar for hand washing. 
+          Effectively removes dirt, grease, and tough stains from fabrics.
+        </p>
+        <p class="mb-2"><b>Weight:</b> 200g, 400g</p>
+        <p class="mb-2"><b>Feature:</b> Easy grip shape</p>
+        <p><b>Ideal For:</b> Collars, cuffs, and heavy stains</p>
+        <button class="mt-6 bg-[#B4844C] text-white px-6 py-2 rounded hover:bg-[#9A7240] transition-colors">
+          Enquire Now
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Generic function to open any popup by ID
+    function openPopup(popupId) {
+      document.getElementById(popupId).style.display = "flex";
+      document.body.style.overflow = 'hidden';
+    }
+
+    // Generic function to close any popup by ID
+    function closePopup(popupId) {
+      document.getElementById(popupId).style.display = "none";
+      document.body.style.overflow = 'auto';
+    }
+  </script>
+
+</body>
+</html>
