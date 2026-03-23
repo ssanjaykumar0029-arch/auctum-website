@@ -10,7 +10,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #FFFFFF;
+      --bg: #FFFFFF;fv 
       --fg: #1E293B;
       --muted: #64748B;
       --accent: #B4844C;
@@ -23,26 +23,59 @@
     body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--fg); overflow-x: hidden; }
     .font-display { font-family: 'Playfair Display', serif; }
 
-    /* --- Top Bar --- */
-    .top-bar {
-      background: var(--fg);
-      color: white;
-      padding: 8px 0;
-      font-size: 0.85rem;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
-
-    /* --- Main Navigation --- */
-    .nav-main {
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(12px);
-      box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05);
+    /* --- Header Styles --- */
+    .site-header {
+      background: white;
       position: sticky;
       top: 0;
       z-index: 50;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     }
 
-    /* --- Dropdown --- */
+    .nav-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 0;
+    }
+
+    /* --- Top Showcase (Image) --- */
+    .top-showcase-banner {
+      width: 100%;
+      background-color: #f3f4f6;
+      position: relative;
+    }
+    .top-showcase-banner img {
+      width: 100%;
+      height: auto;
+      max-height: 500px;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* --- Video Section Styles --- */
+    .video-section {
+      background: var(--fg);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .video-container {
+      position: relative;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      aspect-ratio: 16/9;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* Dropdown */
     .nav-item { position: relative; }
     .dropdown-menu {
       position: absolute;
@@ -68,17 +101,17 @@
     .dropdown-link { display: block; padding: 10px 12px; border-radius: 6px; color: var(--fg); text-decoration: none; font-size: 0.9rem; transition: background 0.2s; }
     .dropdown-link:hover { background: #F1F5F9; color: var(--accent); }
 
-    /* --- Animations --- */
+    /* Animations */
     .reveal { opacity: 0; transform: translateY(30px); transition: opacity 0.8s ease, transform 0.8s ease; }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     .stagger-1 { transition-delay: 0.1s; } .stagger-2 { transition-delay: 0.2s; } .stagger-3 { transition-delay: 0.3s; }
 
     .btn-primary {
-      background: var(--accent); color: white; padding: 12px 24px; border-radius: 6px;
-      font-weight: 600; border: none; cursor: pointer; transition: all 0.3s;
-      display: inline-block; text-decoration: none; font-size: 0.9rem;
+      background: var(--accent); color: white; padding: 10px 20px; border-radius: 6px;
+      font-weight: 600; border: none; cursor: pointer; transition: all 0.3s;  
+      display: inline-block; text-decoration: none; font-size: 0.85rem;
     }
-    .btn-primary:hover { background: #9A7240; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(180, 132, 76, 0.3); }
+    .btn-primary:hover { background: #9A7240; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(180, 132, 76, 0.3); }
     .btn-outline {
       background: transparent; color: var(--accent); padding: 10px 20px; border-radius: 6px;
       font-weight: 600; border: 2px solid var(--accent); cursor: pointer; transition: all 0.3s;
@@ -86,17 +119,57 @@
     }
     .btn-outline:hover { background: var(--accent); color: white; }
 
-    /* --- Hero --- */
+    /* --- HERO SLIDER --- */
     .hero-section {
-      background: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
       position: relative;
+      width: 100%;
+      height: 80vh;
+      min-height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       overflow: hidden;
     }
-    .hero-section::before {
-      content: ""; position: absolute; top: -50%; right: -20%; width: 80%; height: 150%;
-      background: radial-gradient(circle, rgba(180,132,76,0.1) 0%, transparent 70%);
-      pointer-events: none;
+
+    .hero-slides-bg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
     }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.5s ease-in-out;
+    }
+    
+    .hero-slide.active { opacity: 1; }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to right, rgba(0,0,0,0.75) 0%, rgba(0,0,0,0.2) 60%, rgba(0,0,0,0.4) 100%);
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      color: white;
+      padding: 0 20px;
+      max-width: 900px;
+    }
+    
+    .hero-content h1 { text-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+    .hero-content p { text-shadow: 0 2px 5px rgba(0,0,0,0.3); }
 
     /* --- Category Cards --- */
     .category-card {
@@ -114,14 +187,8 @@
       box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
       border-color: var(--accent);
     }
-    .category-img-container {
-      height: 200px;
-      overflow: hidden;
-      position: relative;
-    }
-    .category-img {
-      width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;
-    }
+    .category-img-container { height: 200px; overflow: hidden; position: relative; }
+    .category-img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
     .category-card:hover .category-img { transform: scale(1.1); }
 
     /* --- Forms --- */
@@ -137,7 +204,7 @@
     }
     .custom-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(180, 132, 76, 0.1); }
 
-    /* --- Enquiry Modal --- */
+    /* --- Modal --- */
     .modal-overlay {
       position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
       z-index: 100; opacity: 0; visibility: hidden; transition: all 0.3s ease;
@@ -159,6 +226,7 @@
       .modal-content { flex-direction: column; height: auto; max-height: 90vh; overflow-y: auto; }
       .map-section { width: 100% !important; height: 250px !important; }
       .form-section { width: 100% !important; padding: 20px !important; }
+      .hero-section { min-height: 400px; height: 50vh; }
     }
   </style>
 </head>
@@ -170,24 +238,14 @@
     <button id="closeEnquiryModal" class="absolute top-4 right-4 z-20 p-2 bg-white rounded-full shadow-md hover:bg-gray-100">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
     </button>
-
     <div class="flex flex-col md:flex-row h-full">
-      <!-- Left: Map Section -->
       <div class="map-section md:w-1/2 h-64 md:h-full relative bg-blue-50 p-6 flex flex-col">
         <h3 class="font-display text-2xl font-bold mb-4 text-[var(--fg)]">Our Locations</h3>
-        
-        <!-- Map Container (Markers and Address List Removed) -->
-        <div class="relative w-full flex-1 bg-contain bg-center bg-no-repeat rounded-lg overflow-hidden border border-gray-200" 
-             style="background-image: url('locationmap.png');">
-          <!-- Map Only -->
-        </div>
+        <div class="relative w-full flex-1 bg-contain bg-center bg-no-repeat rounded-lg overflow-hidden border border-gray-200" style="background-image: url('locationmap.png');"></div>
       </div>
-
-      <!-- Right: Form Section -->
       <div class="form-section md:w-1/2 p-8 md:p-10 bg-white overflow-y-auto">
         <h3 class="font-display text-2xl font-bold mb-2 text-[var(--fg)]">Send Enquiry</h3>
         <p class="text-sm text-[var(--muted)] mb-6">Fill the form below and we will get back to you shortly.</p>
-        
         <form id="enquiryForm" class="space-y-5">
           <div>
             <label class="block text-xs font-semibold text-gray-500 uppercase mb-2">Your Name</label>
@@ -213,26 +271,10 @@
     </div>
   </div>
 
-  <!-- ==================== HEADER ==================== -->
-  <!-- Top Bar - Items on Right -->
-  <div class="top-bar">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-end items-center gap-6">
-      <div class="flex items-center gap-2">
-        <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-        <a href="tel:+919946133337" class="hover:text-[var(--accent)]">Sales Support: <strong>+91 9946133337</strong></a>
-      </div>
-      <div class="h-4 w-px bg-gray-600 hidden sm:block"></div>
-      <button id="openEnquiryBtn" class="text-xs font-bold uppercase tracking-wider px-4 py-2 bg-[var(--accent)] text-white rounded hover:bg-white hover:text-[var(--accent)] transition-colors">
-        Send Enquiry
-      </button>
-    </div>
-  </div>
-
-  <!-- Main Navigation -->
-  <nav class="nav-main">
+  <!-- ==================== HEADER (Clean, No Address) ==================== -->
+  <header class="site-header">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between items-center h-16">
-        <!-- Logo -->
+      <div class="nav-row">
         <a href="index.html" class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-lg bg-[var(--fg)] flex items-center justify-center shadow">
             <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -243,10 +285,8 @@
           </div>
         </a>
 
-        <!-- Nav Links -->
         <div class="hidden lg:flex items-center gap-8">
           <a href="#home" class="text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] transition-colors">Home</a>
-          
           <div class="nav-item">
             <a href="products.html" class="text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] transition-colors flex items-center gap-1">
               Products <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
@@ -263,11 +303,13 @@
           <a href="#contact" class="text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] transition-colors">Contact</a>
         </div>
 
-        <!-- Mobile Menu Button -->
-        <button id="mobileMenuBtn" class="lg:hidden p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        <div class="flex items-center gap-4">
+            <button id="openEnquiryBtn" class="btn-primary hidden sm:block">Send Enquiry</button>
+            <button id="mobileMenuBtn" class="lg:hidden p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+        </div>
       </div>
     </div>
-  </nav>
+  </header>
 
   <!-- Mobile Menu -->
   <div id="mobileMenu" class="fixed top-0 right-0 bottom-0 w-80 bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-300 lg:hidden">
@@ -279,126 +321,106 @@
         <a href="#quality" class="text-lg font-medium">Quality</a>
         <a href="#about" class="text-lg font-medium">About</a>
         <a href="#contact" class="text-lg font-medium">Contact</a>
+        <button id="openEnquiryBtnMobile" class="btn-primary mt-4 text-center">Send Enquiry</button>
       </div>
     </div>
   </div>
-
-  <!-- ==================== HERO SECTION ==================== -->
-  <section id="home" class="hero-section py-20 md:py-28">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid lg:grid-cols-2 gap-12 items-center">
-        <div class="order-2 lg:order-1">
-          <div class="reveal">
-            <span class="inline-block px-3 py-1 bg-[var(--accent)]/10 text-xs font-bold text-[var(--accent)] uppercase tracking-wider mb-4 rounded-full">
-              Welcome to Auctum Solutions
-            </span>
-          </div>
-          <h1 class="reveal stagger-1 font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-            Powering Brands with <br><span class="text-[var(--accent)] italic">Purity & Trust.</span>
-          </h1>
-          <p class="reveal stagger-2 text-lg text-[var(--muted)] mb-6 max-w-lg leading-relaxed">
-            We are a leading contract manufacturer dedicated to producing high-quality home care and divine care products.
-          </p>
-          <p class="reveal stagger-2 text-base text-[var(--fg)] mb-8 max-w-lg border-l-4 border-[var(--accent)] pl-4 italic">
-            "Committed to excellence, we blend tradition with technology to deliver purity in every drop."
-          </p>
-          <div class="reveal stagger-3">
-            <a href="products.html" class="btn-primary">Explore Products</a>
-          </div>
-        </div>
-        <div class="order-1 lg:order-2 reveal">
-          <div class="relative max-w-md mx-auto">
-            <div class="absolute -inset-4 bg-[var(--accent)]/10 rounded-3xl transform rotate-3"></div>
-            <img src="maincombain.png" alt="Auctum Products" class="relative w-full h-auto rounded-2xl shadow-2xl transform hover:rotate-0 transition-transform duration-500">
-          </div>
-        </div>
+  <!-- ==================== 2. HERO SECTION ==================== -->
+  <section id="home" class="hero-section">
+    <div class="hero-slides-bg">
+      <div class="hero-slide active" style="background-image: url('mainpart1.png');"></div>
+      <div class="hero-slide" style="background-image: url('mainpart.png');"></div>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="reveal">
+        <span class="inline-block px-4 py-2 bg-white/10 backdrop-blur-sm text-xs font-bold text-white uppercase tracking-wider mb-6 rounded-full border border-white/20">
+          Welcome to Auctum Solutions
+        </span>
+      </div>
+      <h1 class="reveal stagger-1 font-display text-4xl md:text-6xl lg:text-7xl font-bold leading-tight mb-6">
+        Powering Brands with <br><span class="text-[var(--accent)] italic">Purity & Trust.</span>
+      </h1>
+      <p class="reveal stagger-2 text-lg md:text-xl text-gray-200 mb-8 max-w-2xl mx-auto leading-relaxed">
+        We are a leading contract manufacturer dedicated to producing high-quality home care and divine care products.
+      </p>
+      <div class="reveal stagger-3 flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="products.html" class="btn-primary bg-[var(--accent)] hover:bg-[#9A7240]">Explore Products</a>
+        <a href="#contact" class="btn-outline border-white text-white hover:bg-white hover:text-[var(--fg)]">Contact Us</a>
       </div>
     </div>
   </section>
 
-  <!-- ==================== PRODUCT CATEGORIES ==================== -->
+  <!-- ==================== 3. PRODUCT CATEGORIES ==================== -->
   <section id="products" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 reveal">
         <h2 class="font-display text-4xl font-bold mb-4">Our Product Range</h2>
         <p class="text-[var(--muted)] max-w-2xl mx-auto">Quality products crafted with precision for homes across India.</p>
       </div>
-
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        
-        <!-- 1. Divine Care -->
         <div class="category-card reveal stagger-1">
           <div class="category-img-container">
             <img src="divine combain.png" alt="Divine Care" class="category-img">
           </div>
           <div class="p-6 flex-1 flex flex-col">
             <h3 class="font-display text-xl font-bold mb-2">Divine Care</h3>
-            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Spiritual essentials including Incense Sticks, Sambrani, and Lamp Oils for a pure atmosphere.</p>
+            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Spiritual essentials including Incense Sticks, Sambrani, and Lamp Oils.</p>
             <a href="productdivine.html" class="btn-outline text-center mt-auto">Explore Products</a>
           </div>
         </div>
-
-        <!-- 2. Dishwash -->
         <div class="category-card reveal stagger-2">
           <div class="category-img-container">
             <img src="dishwashcombain.png" alt="Dishwash" class="category-img">
           </div>
           <div class="p-6 flex-1 flex flex-col">
             <h3 class="font-display text-xl font-bold mb-2">Dishwash</h3>
-            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Powerful cleaning solutions with Lemon Fresh and Tamarind variants for spotless utensils.</p>
-            <a href="productdishwash.html"class="btn-outline text-center mt-auto">Explore Products</a>
+            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Powerful cleaning solutions with Lemon Fresh and Tamarind variants.</p>
+            <a href="productdishwash.html" class="btn-outline text-center mt-auto">Explore Products</a>
           </div>
         </div>
-
-        <!-- 3. Detergents -->
         <div class="category-card reveal stagger-3">
           <div class="category-img-container">
-            <img src="detergent combain.png"alt="Detergents" class="category-img">
+            <img src="detergent combain.png" alt="Detergents" class="category-img">
           </div>
           <div class="p-6 flex-1 flex flex-col">
             <h3 class="font-display text-xl font-bold mb-2">Detergents</h3>
-            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Premium fabric care powders and soaps that protect colors and remove tough stains.</p>
+            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Premium fabric care powders and soaps that protect colors.</p>
             <a href="productdetergent.html" class="btn-outline text-center mt-auto">Explore Products</a>
           </div>
         </div>
-
-        <!-- 4. Toilet Cleaning -->
         <div class="category-card reveal stagger-4">
           <div class="category-img-container">
             <img src="toiletcombain.png" alt="Toilet Cleaning" class="category-img">
           </div>
           <div class="p-6 flex-1 flex flex-col">
             <h3 class="font-display text-xl font-bold mb-2">Toilet Cleaning</h3>
-            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Effective phenyls and cleaners ensuring hygiene and freshness for your bathrooms.</p>
+            <p class="text-sm text-[var(--muted)] mb-4 flex-1">Effective phenyls and cleaners ensuring hygiene and freshness.</p>
             <a href="producttoilet.html" class="btn-outline text-center mt-auto">Explore Products</a>
           </div>
         </div>
-
       </div>
     </div>
   </section>
 
-  <!-- ==================== STATS SECTION ==================== -->
-  <section class="py-16 bg-[var(--fg)] text-white">
+  <!-- ==================== 4. VIDEO SECTION (Auto-play) ==================== -->
+  <section class="video-section py-12 md:py-20">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
-        <div class="reveal">
-          <h3 class="font-display text-5xl font-bold text-[var(--accent)] mb-2">10+</h3>
-          <p class="text-sm uppercase tracking-wider text-gray-400">Years of Business</p>
-        </div>
-        <div class="reveal stagger-1">
-          <h3 class="font-display text-5xl font-bold text-[var(--accent)] mb-2">5000+</h3>
-          <p class="text-sm uppercase tracking-wider text-gray-400">Tonnes Production Per Annum</p>
-        </div>
-        <div class="reveal stagger-2">
-          <h3 class="font-display text-5xl font-bold text-[var(--accent)] mb-2">2</h3>
-          <p class="text-sm uppercase tracking-wider text-gray-400">Manufacturing Units</p>
-        </div>
+      <div class="text-center mb-10 reveal">
+        <h2 class="font-display text-3xl md:text-4xl font-bold text-white mb-3">Our Manufacturing Process</h2>
+        <p class="text-gray-400">A glimpse into our state-of-the-art manufacturing units.</p>
+      </div>
+      
+      <div class="video-container rounded-xl overflow-hidden shadow-2xl border border-gray-700 reveal stagger-1">
+        <video id="promoVideo" autoplay muted loop playsinline poster="mainpart1.png">
+          <source src="detergent.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
       </div>
     </div>
   </section>
 
-  <!-- ==================== QUALITY & PACKAGING SECTION ==================== -->
+  <!-- ==================== 5. QUALITY & PACKAGING SECTION ==================== -->
   <section id="quality" class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 reveal">
@@ -469,8 +491,8 @@
       </div>
     </div>
   </section>
-
-  <!-- ==================== ABOUT & VISION/MISSION ==================== -->
+  
+  <!-- ==================== 6. ABOUT & VISION/MISSION ==================== -->
   <section id="about" class="py-20 bg-[var(--card)]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid lg:grid-cols-2 gap-16 items-center">
@@ -501,7 +523,7 @@
     </div>
   </section>
 
-  <!-- ==================== WHY CHOOSE US ==================== -->
+  <!-- ==================== 7. WHY CHOOSE US ==================== -->
   <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center mb-16 reveal">
@@ -542,11 +564,30 @@
     </div>
   </section>
 
-  <!-- ==================== CONTACT FOOTER ==================== -->
-  <footer id="contact" class="bg-[var(--fg)] text-white pt-16 pb-8">
+  <!-- ==================== STATS SECTION ==================== -->
+  <section class="py-16 bg-[var(--fg)] text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+        <div class="reveal">
+          <h3 class="font-display text-5xl font-bold text-[var(--accent)] mb-2">10+</h3>
+          <p class="text-sm uppercase tracking-wider text-gray-400">Years of Business</p>
+        </div>
+        <div class="reveal stagger-1">
+          <h3 class="font-display text-5xl font-bold text-[var(--accent)] mb-2">5000+</h3>
+          <p class="text-sm uppercase tracking-wider text-gray-400">Tonnes Production Per Annum</p>
+        </div>
+        <div class="reveal stagger-2">
+          <h3 class="font-display text-5xl font-bold text-[var(--accent)] mb-2">2</h3>
+          <p class="text-sm uppercase tracking-wider text-gray-400">Manufacturing Units</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==================== FOOTER (Address Here) ==================== -->
+  <footer id="contact" class="bg-[var(--fg)] text-white pt-16 pb-8 border-t border-gray-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-        <!-- Company Info -->
         <div class="col-span-1 md:col-span-2">
           <div class="flex items-center gap-3 mb-6">
             <div class="w-10 h-10 rounded-lg bg-white flex items-center justify-center">
@@ -561,27 +602,19 @@
             Powering brands with purity. Leading contract manufacturers for Home Care and Divine Care products.
           </p>
         </div>
-
-        <!-- Contact Details -->
         <div>
           <h4 class="font-bold text-white mb-4 uppercase tracking-wider text-sm">Contact Us</h4>
           <div class="space-y-3 text-sm text-gray-400">
             <div class="flex items-center gap-2">
               <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-              <span>+91 9946133337 / +91 9900020961</span>
+              <span>+91 8660760425</span>
             </div>
             <div class="flex items-center gap-2">
               <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
               <span>info@auctumsolutions.com</span>
             </div>
-            <div class="flex items-center gap-2">
-              <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
-              <span>www.auctumsolutions.com</span>
-            </div>
           </div>
         </div>
-
-        <!-- Address -->
         <div>
           <h4 class="font-bold text-white mb-4 uppercase tracking-wider text-sm">Address</h4>
           <div class="space-y-3 text-sm text-gray-400">
@@ -590,7 +623,6 @@
           </div>
         </div>
       </div>
-
       <div class="border-t border-gray-800 pt-8 text-center text-xs text-gray-500">
         © 2024 Auctum Solutions Pvt. Ltd. All rights reserved.
       </div>
@@ -617,7 +649,7 @@
     // --- Modal Logic ---
     const enquiryModalOverlay = document.getElementById('enquiryModalOverlay');
     const enquiryModalContent = document.getElementById('enquiryModalContent');
-    const openEnquiryBtn = document.getElementById('openEnquiryBtn');
+    const openEnquiryBtns = document.querySelectorAll('#openEnquiryBtn, #openEnquiryBtnMobile');
     const closeEnquiryBtn = document.getElementById('closeEnquiryModal');
 
     function openModal() {
@@ -632,7 +664,7 @@
       document.body.style.overflow = '';
     }
 
-    openEnquiryBtn.addEventListener('click', openModal);
+    openEnquiryBtns.forEach(btn => btn.addEventListener('click', openModal));
     closeEnquiryBtn.addEventListener('click', closeModal);
     enquiryModalOverlay.addEventListener('click', closeModal);
 
@@ -674,9 +706,21 @@
     }, { threshold: 0.1 });
     document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 
+    // --- HERO BACKGROUND SLIDER LOGIC ---
+    const slides = document.querySelectorAll('.hero-slide');
+    let currentSlide = 0;
+    const slideInterval = 5000;
+
+    function nextSlide() {
+      slides[currentSlide].classList.remove('active');
+      currentSlide = (currentSlide + 1) % slides.length;
+      slides[currentSlide].classList.add('active');
+    }
+
+    if (slides.length > 1) {
+      setInterval(nextSlide, slideInterval);
+    }
+
   </script>
 </body>
 </html>
-
-
-
