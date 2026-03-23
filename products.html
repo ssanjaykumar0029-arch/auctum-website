@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products | Auctum Solutions Pvt. Ltd.</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #FFFFFF;
+      --fg: #1E293B;
+      --muted: #64748B;
+      --accent: #B4844C;
+      --card: #F8FAFC;
+      --border: #E2E8F0;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; background-color: var(--bg); color: var(--fg); }
+    .font-display { font-family: 'Playfair Display', serif; }
+
+    /* Top Bar */
+    .top-bar {
+      background: var(--fg); color: white; padding: 8px 0;
+      font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Navigation */
+    .nav-main {
+      background: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 20px -5px rgba(0,0,0,0.05);
+      position: sticky; top: 0; z-index: 50;
+    }
+    .nav-item { position: relative; }
+    .dropdown-menu {
+      position: absolute; top: 100%; left: 0; transform: translateY(10px);
+      background: white; width: 220px; box-shadow: 0 15px 40px -10px rgba(0,0,0,0.15);
+      border-radius: 10px; opacity: 0; visibility: hidden;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); z-index: 60; padding: 8px; border: 1px solid var(--border);
+    }
+    .nav-item:hover .dropdown-menu { opacity: 1; visibility: visible; transform: translateY(0); }
+    .dropdown-link { display: block; padding: 10px 12px; border-radius: 6px; color: var(--fg); text-decoration: none; font-size: 0.9rem; transition: background 0.2s; }
+    .dropdown-link:hover { background: #F1F5F9; color: var(--accent); }
+
+    /* Product Cards */
+    .product-card {
+      background: white; border-radius: 12px; overflow: hidden;
+      border: 1px solid var(--border); transition: all 0.3s ease;
+    }
+    .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); border-color: var(--accent); }
+    .product-img { width: 100%; height: 200px; object-fit: contain; background: #f9fafb; padding: 10px; transition: transform 0.3s; }
+    .product-card:hover .product-img { transform: scale(1.05); }
+    
+    /* Section Visibility Control */
+    .product-section { display: none; } /* Hidden by default */
+    .product-section.active { display: block; } /* Show only when active */
+
+    /* Filter Tabs UI */
+    .filter-btn {
+      padding: 8px 20px; border-radius: 20px; font-size: 0.9rem; font-weight: 600;
+      border: 2px solid var(--border); background: white; color: var(--fg);
+      cursor: pointer; transition: all 0.2s; margin: 5px;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .filter-btn.active { background: var(--accent); color: white; border-color: var(--accent); }
+
+    /* Mobile Menu */
+    #mobileMenu {
+      position: fixed; top: 0; right: 0; bottom: 0; width: 280px; background: white;
+      box-shadow: -5px 0 20px rgba(0,0,0,0.1); z-index: 100; transform: translateX(100%);
+      transition: transform 0.3s ease;
+    }
+    #mobileMenu.open { transform: translateX(0); }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <div class="top-bar">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center gap-6">
+      <div class="lg:hidden font-bold text-white">Auctum Solutions</div>
+      <div class="flex items-center gap-2 ml-auto">
+        <svg class="w-4 h-4 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
+        <a href="tel:+91 8660760425" class="hover:text-[var(--accent)]">Sales Support: <strong>+91 8660760425</strong></a>
+      </div>
+      <button id="openEnquiryBtn" class="text-xs font-bold uppercase tracking-wider px-4 py-2 bg-[var(--accent)] text-white rounded hover:bg-white hover:text-[var(--accent)] transition-colors hidden sm:block">
+        Send Enquiry
+      </button>
+    </div>
+  </div>
+
+  <nav class="nav-main">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex justify-between items-center h-16">
+        <a href="index.html" class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-lg bg-[var(--fg)] flex items-center justify-center shadow">
+            <svg class="w-6 h-6 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <div class="leading-none">
+            <span class="font-display text-lg font-bold text-[var(--fg)] block">Auctum</span>
+            <span class="text-[9px] font-medium text-[var(--muted)] uppercase tracking-wider">Solutions Pvt. Ltd.</span>
+          </div>
+        </a>
+
+        <div class="hidden lg:flex items-center gap-8">
+          <a href="index.html.html" class="text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] transition-colors">Home</a>
+          
+          <div class="nav-item">
+            <a href="#" class="text-sm font-medium text-[var(--accent)] transition-colors flex items-center gap-1">
+              Products <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </a>
+            <div class="dropdown-menu">
+              <a href="#divine-care" class="dropdown-link filter-link" data-filter="divine-care">Divine Care</a>
+              <a href="#dishwash" class="dropdown-link filter-link" data-filter="dishwash">Dishwash</a>
+              <a href="#detergent" class="dropdown-link filter-link" data-filter="detergent">Detergents</a>
+              <a href="#toilet" class="dropdown-link filter-link" data-filter="toilet">Toilet Cleaning</a>
+            </div>
+          </div>
+
+          <a href="index.html.html" class="text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] transition-colors">About</a>
+          <a href="index.html.html" class="text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] transition-colors">Quality</a>
+          <a href="index.html.html" class="text-sm font-medium text-[var(--muted)] hover:text-[var(--fg)] transition-colors">Contact</a>
+        </div>
+
+        <button id="mobileMenuBtn" class="lg:hidden p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div id="mobileMenu" class="lg:hidden">
+    <div class="p-6">
+      <button id="closeMobileMenu" class="absolute top-4 right-4 p-2"><svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 18L18 6M6 6l12 12"/></svg></button>
+      <div class="mt-12 flex flex-col gap-4">
+        <a href="index.html" class="text-lg font-medium">Home</a>
+        <a href="#divine-care" class="text-lg font-medium filter-link" data-filter="divine-care">Divine Care</a>
+        <a href="#dishwash" class="text-lg font-medium filter-link" data-filter="dishwash">Dishwash</a>
+        <a href="#detergent" class="text-lg font-medium filter-link" data-filter="detergent">Detergents</a>
+        <a href="#toilet" class="text-lg font-medium filter-link" data-filter="toilet">Toilet Cleaning</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <main class="py-12 bg-gray-50 min-h-screen">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-10">
+        <h1 class="font-display text-4xl font-bold text-[var(--fg)]">Our Products</h1>
+        <p class="text-[var(--muted)] mt-2">Select a category to view details</p>
+      </div>
+
+      <div class="flex flex-wrap justify-center mb-12">
+        <button class="filter-btn active" data-filter="all">All Products</button>
+        <button class="filter-btn" data-filter="divine-care">Divine Care</button>
+        <button class="filter-btn" data-filter="dishwash">Dishwash</button>
+        <button class="filter-btn" data-filter="detergent">Detergents</button>
+        <button class="filter-btn" data-filter="toilet">Toilet Cleaning</button>
+      </div>
+
+      <!-- 1. DIVINE CARE SECTION -->
+      <section id="divine-care" class="product-section mb-16">
+        <h2 class="font-display text-3xl font-bold mb-6 border-l-4 border-[var(--accent)] pl-4">Divine Care</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="Incense sticks pack.png" alt="Incense Sticks" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Incense Sticks</h3>
+              <p class="text-sm text-[var(--muted)]">Premium quality aromatic sticks.</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">Available in Multiple Scents</p>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="sambarani.png" alt="Sambrani" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Sambrani Cups</h3>
+              <p class="text-sm text-[var(--muted)]">Traditional resin cups for puja.</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">Premium Pack</p>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="pooja oil bottle.png" alt="Lamp Oil" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Agradeep Lamp Oil</h3>
+              <p class="text-sm text-[var(--muted)]">Pure oil for divine lighting.</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">1 l Bottle </p>
+            </div>
+          </div>
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="pooja Oil Pouch.jpg" alt="Lamp Oil" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Agradeep Lamp Oil</h3>
+              <p class="text-sm text-[var(--muted)]">Pure oil for divine lighting.</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">100 ml </p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 2. DISHWASH SECTION (Updated: Added 2 More) -->
+      <section id="dishwash" class="product-section mb-16">
+        <h2 class="font-display text-3xl font-bold mb-6 border-l-4 border-[var(--accent)] pl-4">Dishwash</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="dishwash soap combain.png" alt="Glim Dishwash Tub" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Glim Dishwash Soap</h3>
+              <p class="text-sm text-[var(--muted)]">Lemon Fresh & Tamarind Fresh </p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">50 g</p>
+            </div>
+          </div>
+
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="Glim Tub.png" alt="Dishwash Liquid" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Dishwash Soap</h3>
+              <p class="text-sm text-[var(--muted)]">Free cleaning scrub</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">100 g</p>
+            </div>
+          </div>
+           <div class="product-card">
+            <div class="overflow-hidden"><img src="glim pouch.png" alt="Dishwash Liquid" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Dishwash Liquid</h3>
+              <p class="text-sm text-[var(--muted)]">Easy refill for bottles</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">100 ml</p>
+            </div>
+          </div>
+           <div class="product-card">
+            <div class="overflow-hidden"><img src="GLim dishwash Power  350g.png" alt="Dishwash Liquid" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Dishwash Powder</h3>
+              <p class="text-sm text-[var(--muted)]">Strong grease removal.</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">250 g</p>
+            </div>
+          </div>
+          <!-- NEW Addition 1 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="glimBottle 2 in 1.png" alt="Dishwash Scrub" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Dishwash Liquid Combo Pack (Lemon + Tamarind) – Bottle</h3>
+              <p class="text-sm text-[var(--muted)]">Removes tough oil and food stains </p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">250 ml + 250 ml Combo Pack</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 3. DETERGENTS SECTION (Updated: Added 5 More = Total 6) -->
+      <section id="detergent" class="product-section mb-16">
+        <h2 class="font-display text-3xl font-bold mb-6 border-l-4 border-[var(--accent)] pl-4">Detergents</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          
+          <!-- Product 1 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="Glim Detergent Powder.png" alt="Detergent Powder" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Detergent Powder – Top Load Washing Machine</h3>
+              <p class="text-sm text-[var(--muted)]">High foam formula suitable for top load machines</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">150g/500g/1kg Packs</p>
+            </div>
+          </div>
+
+          <!-- NEW Product 2 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="detergent Fabric Condiotioner Container copy.png" alt="Detergent Cake" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Fabric Liquid Detergent – Top Load Washing Machine</h3>
+              <p class="text-sm text-[var(--muted)]">Works well in high water level</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">500 ml</p>
+            </div>
+          </div>
+
+          <!-- NEW Product 3 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="ARAMANE front.png" alt="Liquid Detergent" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Detergent Liquid – Front Load Washing Machine</h3>
+              <p class="text-sm text-[var(--muted)]">Gentle on fabric, tough on stains.</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">150g/500g/1kg Packs</p>
+            </div>
+          </div>
+
+          <!-- NEW Product 4 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="aramane liquid front.png" alt="Fabric Conditioner" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Liquid Detergent – Top Load Washing Machine</h3>
+              <p class="text-sm text-[var(--muted)]">Works with low water level</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">500 ml</p>
+            </div>
+          </div>
+
+          <!-- NEW Product 5 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="detergent Fabric conditioner.png" alt="Bleach Powder" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Detergent Liquid – Fabric Clothes</h3>
+              <p class="text-sm text-[var(--muted)]">Removes stains and dirt from clothes</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">10 ml (single wash)</p>
+            </div>
+          </div>
+
+          <!-- NEW Product 6 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="detergent soap.jpg" alt="Liquid Blue" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Laundry Soap – Clothes Washing</h3>
+              <p class="text-sm text-[var(--muted)]">Good for hand washing fabrics</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">100 g</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- 4. TOILET CLEANING SECTION (Updated: Added 2 More) -->
+      <section id="toilet" class="product-section mb-16">
+        <h2 class="font-display text-3xl font-bold mb-6 border-l-4 border-[var(--accent)] pl-4">Toilet Cleaning</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          
+          <!-- Product 1 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="toilet Phenyle Cleaner.png" alt="Phenyl" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Toilet Phenyl / Toilet Cleaner Liquid</h3>
+              <p class="text-sm text-[var(--muted)]">Leaves fresh fragrance</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">200 ml</p>
+            </div>
+          </div>
+
+          <!-- NEW Addition 2 -->
+          <div class="product-card">
+            <div class="overflow-hidden"><img src="toilet Phenyle all flavour 2.png" alt="Bathroom Cleaner" class="product-img"></div>
+            <div class="p-4">
+              <h3 class="font-bold text-lg">Floor Cleaner Liquid</h3>
+              <p class="text-sm text-[var(--muted)]">Kills germs and bacteria</p>
+              <p class="text-sm font-semibold text-[var(--accent)] mt-2">200 ml</p>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- FULL FOOTER -->
+  <footer class="bg-[var(--fg)] text-white pt-12 pb-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center mb-8">
+        <h2 class="text-lg font-bold text-white mb-2">Our Complete Product Range</h2>
+        <div class="w-16 h-1 bg-[var(--accent)] mx-auto"></div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm text-gray-400 mb-12 pb-8 border-b border-gray-700">
+        
+        <div>
+          <h3 class="font-bold text-white mb-4 border-b pb-2 border-[var(--accent)]">Divine Care</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Incense Sticks</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Sambrani Cups</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Lamp Oil</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Dhoop Sticks</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-white mb-4 border-b pb-2 border-[var(--accent)]">Dishwash</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Dishwash Bar</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Dishwash Gel</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Dishwash Scrub</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Liquid Detergent</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-white mb-4 border-b pb-2 border-[var(--accent)]">Detergents</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Detergent Powder</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Detergent Cake</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Fabric Whitener</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Liquid Blue</li>
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-white mb-4 border-b pb-2 border-[var(--accent)]">Toilet Cleaning</h3>
+          <ul class="space-y-2">
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Phenyl (All Flavours)</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Toilet Cleaner</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Bathroom Acid</li>
+            <li class="flex items-center gap-2"><span class="w-1.5 h-1.5 bg-[var(--accent)] rounded-full"></span>Floor Cleaners</li>
+          </ul>
+        </div>
+
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-8">
+        
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-[var(--accent)]">Auctum Solutions Pvt. Ltd.</h3>
+          <p class="text-gray-400 text-sm leading-relaxed">
+            Powering brands with purity. Leading contract manufacturers for Home Care and Divine Care products.
+          </p>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-[var(--accent)]">Contact Us</h3>
+          <div class="space-y-3 text-sm text-gray-400">
+            <div class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-1 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+              </svg>
+              <span>+91 9946133337 / +91 9900020961</span>
+            </div>
+            <div class="flex items-start gap-2">
+              <svg class="w-4 h-4 mt-1 text-[var(--accent)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+              <span>info@auctumsolutions.com</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="font-bold text-lg mb-4 text-[var(--accent)]">Address</h3>
+          <div class="space-y-3 text-sm text-gray-400">
+            <p><strong class="text-white">Bengaluru:</strong><br>Shed #27, DITPL, KIADB, Doddaballapur - 561203</p>
+            <p><strong class="text-white">Mandya:</strong><br>P-45, Tubinkere Industrial Estate, Mandya - 571 402</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="border-t border-gray-700 pt-6 text-center text-xs text-gray-500">
+        © 2024 Auctum Solutions Pvt. Ltd. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // --- Logic to Show/Hide Sections based on URL Hash ---
+    function filterProducts() {
+      const hash = window.location.hash.substring(1); // remove the '#'
+      const sections = document.querySelectorAll('.product-section');
+      const buttons = document.querySelectorAll('.filter-btn');
+
+      if (hash) {
+        sections.forEach(section => {
+          if (section.id === hash) {
+            section.classList.add('active');
+          } else {
+            section.classList.remove('active');
+          }
+        });
+
+        buttons.forEach(btn => {
+          if (btn.dataset.filter === hash) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+      } else {
+        sections.forEach(section => section.classList.add('active'));
+        buttons.forEach(btn => {
+           if(btn.dataset.filter === 'all') btn.classList.add('active');
+           else btn.classList.remove('active');
+        });
+      }
+    }
+
+    window.addEventListener('load', filterProducts);
+    window.addEventListener('hashchange', filterProducts);
+
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+        if (filter === 'all') {
+           history.pushState("", document.title, window.location.pathname);
+           filterProducts(); 
+        } else {
+           window.location.hash = filter;
+        }
+      });
+    });
+
+    // --- Mobile Menu Logic ---
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const closeMobileMenu = document.getElementById('closeMobileMenu');
+    const mobileMenu = document.getElementById('mobileMenu');
+
+    mobileMenuBtn.addEventListener('click', () => mobileMenu.classList.add('open'));
+    closeMobileMenu.addEventListener('click', () => mobileMenu.classList.remove('open'));
+    
+    mobileMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+      });
+    });
+  </script>
+</body>
+</html>
